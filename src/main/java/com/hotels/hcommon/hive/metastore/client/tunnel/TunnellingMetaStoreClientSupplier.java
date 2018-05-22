@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package com.hotels.hcommon.hive.metastore.client;
-
-import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
+package com.hotels.hcommon.hive.metastore.client.tunnel;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -26,100 +24,18 @@ import java.net.URISyntaxException;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.conf.HiveConf.ConfVars;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Supplier;
 
 import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
+import com.hotels.hcommon.hive.metastore.client.CloseableMetaStoreClient;
+import com.hotels.hcommon.hive.metastore.client.HiveMetaStoreClientSupplier;
+import com.hotels.hcommon.hive.metastore.client.MetaStoreClientFactory;
 import com.hotels.hcommon.ssh.MethodChecker;
 import com.hotels.hcommon.ssh.SshException;
-import com.hotels.hcommon.ssh.SshSettings;
 import com.hotels.hcommon.ssh.TunnelableFactory;
-import com.hotels.hcommon.ssh.TunnelableSupplier;
 
 public class TunnellingMetaStoreClientSupplier implements Supplier<CloseableMetaStoreClient> {
-
-  private class HiveMetaStoreClientSupplier implements TunnelableSupplier<CloseableMetaStoreClient> {
-    private final MetaStoreClientFactory metaStoreClientFactory;
-    private final String name;
-    private final HiveConf hiveConf;
-
-    private HiveMetaStoreClientSupplier(MetaStoreClientFactory metaStoreClientFactory, HiveConf hiveConf, String name) {
-      this.metaStoreClientFactory = metaStoreClientFactory;
-      this.hiveConf = hiveConf;
-      this.name = name;
-    }
-
-    @Override
-    public CloseableMetaStoreClient get() {
-      return metaStoreClientFactory.newInstance(hiveConf, name);
-    }
-  }
-
-  public static class Builder {
-
-    private String name;
-    private String sshRoute;
-    private int sshPort;
-    private String privateKeys;
-    private String knownHosts;
-    private String localHost;
-    private int timeout;
-    private boolean strictHostKeyChecking;
-
-    public TunnellingMetaStoreClientSupplier build(HiveConf hiveConf, MetaStoreClientFactory metaStoreClientFactory) {
-      return new TunnellingMetaStoreClientSupplier(hiveConf, defaultIfBlank(name, "tunnelingMetaStoreClient"),
-          defaultIfBlank(localHost, "localhost"),
-          metaStoreClientFactory,
-          new TunnelableFactory<CloseableMetaStoreClient>(SshSettings
-              .builder()
-              .withRoute(sshRoute)
-              .withSshPort(sshPort)
-              .withPrivateKeys(privateKeys)
-              .withKnownHosts(knownHosts)
-              .withSessionTimeout(timeout)
-              .withStrictHostKeyChecking(strictHostKeyChecking)
-              .build()));
-    }
-
-    public Builder withName(String name) {
-      this.name = name;
-      return this;
-    }
-
-    public Builder withRoute(String sshRoute) {
-      this.sshRoute = sshRoute;
-      return this;
-    }
-
-    public Builder withPort(int sshPort) {
-      this.sshPort = sshPort;
-      return this;
-    }
-
-    public Builder withPrivateKeys(String privateKeys) {
-      this.privateKeys = privateKeys;
-      return this;
-    }
-
-    public Builder withKnownHosts(String knownHosts) {
-      this.knownHosts = knownHosts;
-      return this;
-    }
-
-    public Builder withLocalHost(String localHost) {
-      this.localHost = localHost;
-      return this;
-    }
-
-    public Builder withTimeout(int timeout) {
-      this.timeout = timeout;
-      return this;
-    }
-
-    public Builder withStrictHostKeyChecking(String strictHostKeyChecking) {
-      this.strictHostKeyChecking = "true".equals(strictHostKeyChecking) || "yes".equals(strictHostKeyChecking);
-      return this;
-    }
-  }
 
   private final String localHost;
   private final String remoteHost;
@@ -129,7 +45,8 @@ public class TunnellingMetaStoreClientSupplier implements Supplier<CloseableMeta
   private final TunnelableFactory<CloseableMetaStoreClient> tunnelableFactory;
   private final MetaStoreClientFactory metaStoreClientFactory;
 
-  private TunnellingMetaStoreClientSupplier(
+  @VisibleForTesting
+  TunnellingMetaStoreClientSupplier(
       HiveConf hiveConf,
       String name,
       String localHost,
