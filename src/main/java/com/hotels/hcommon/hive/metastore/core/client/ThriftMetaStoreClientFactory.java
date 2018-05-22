@@ -1,5 +1,5 @@
 /**
- * Copyright (C) ${license.git.copyrightYears} Expedia Inc.
+ * Copyright (C) 2017-2018 Expedia Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.hotels.hcommon.hive.metastore.core.client;
 
 import org.apache.hadoop.hive.conf.HiveConf;
@@ -27,6 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
+
+import com.hotels.hcommon.hive.metastore.core.MetaStoreClientException;
 
 public class ThriftMetaStoreClientFactory implements MetaStoreClientFactory {
   private static final Logger LOG = LoggerFactory.getLogger(
@@ -48,7 +51,7 @@ public class ThriftMetaStoreClientFactory implements MetaStoreClientFactory {
     } catch (MetaException | RuntimeException e) {
       String message = String.format("Unable to connect to '%s' metastore at '%s'", name,
           conf.getVar(ConfVars.METASTOREURIS));
-      throw new RuntimeException(message, e);
+      throw new MetaStoreClientException(message, e);
     }
   }
 
