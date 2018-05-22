@@ -13,15 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hotels.hcommon.hive.metastore.client;
+package com.hotels.hcommon.hive.metastore;
 
-import java.io.Closeable;
 
-import org.apache.hadoop.hive.metastore.IHMSHandler;
-import org.apache.hadoop.hive.metastore.IMetaStoreClient;
+public class MetaStoreUnavailableException extends RuntimeException {
+  private static final long serialVersionUID = 1L;
 
-import com.hotels.hcommon.ssh.Tunnelable;
+  public MetaStoreUnavailableException(String message) {
+    super(message);
+  }
 
-public interface CloseableMetaStoreClient extends IMetaStoreClient, IHMSHandler, Closeable, Tunnelable {
-  public boolean isOpen();
+  public MetaStoreUnavailableException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
 }
