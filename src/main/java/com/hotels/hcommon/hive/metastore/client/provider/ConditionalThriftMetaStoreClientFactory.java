@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hotels.hcommon.hive.metastore.client;
+package com.hotels.hcommon.hive.metastore.client.provider;
 
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.conf.HiveConf.ConfVars;
@@ -30,27 +30,36 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Strings;
 
 import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
+import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
+import com.hotels.hcommon.hive.metastore.client.api.ConditionalMetaStoreClientFactory;
 
-public class ThriftMetaStoreClientFactory implements MetaStoreClientFactory {
-  private static final Logger LOG = LoggerFactory.getLogger(
-      ThriftMetaStoreClientFactory.class);
+public class ConditionalThriftMetaStoreClientFactory implements ConditionalMetaStoreClientFactory {
+  private static final Logger LOG = LoggerFactory.getLogger(ConditionalThriftMetaStoreClientFactory.class);
 
   public static final String ACCEPT_PREFIX = "thrift:";
 
+  private final HiveConf hiveConf;
+  private final String name;
+
+
+  public ConditionalThriftMetaStoreClientFactory(HiveConf hiveConf, String name) {
+    this.hiveConf = hiveConf;
+    this.name = name;
+  }
+
   @Override
-  public CloseableMetaStoreClient newInstance(HiveConf conf, String name) {
-    LOG.debug("Connecting to '{}' metastore at '{}'", name, conf.getVar(ConfVars.METASTOREURIS));
+  public CloseableMetaStoreClient newInstance() {
+    LOG.debug("Connecting to '{}' metastore at '{}'", name, hiveConf.getVar(ConfVars.METASTOREURIS));
     try {
-      return CloseableMetaStoreClientFactory
-          .newInstance(RetryingMetaStoreClient.getProxy(conf, new HiveMetaHookLoader() {
-            @Override
-            public HiveMetaHook getHook(Table tbl) throws MetaException {
-              return null;
-            }
-          }, HiveMetaStoreClient.class.getName()));
+      return new CloseableMetaStoreClientFactory(RetryingMetaStoreClient.getProxy(hiveConf, new HiveMetaHookLoader() {
+        @Override
+        public HiveMetaHook getHook(Table tbl) throws MetaException {
+          return null;
+        }
+      }, HiveMetaStoreClient.class.getName())).newInstance();
     } catch (MetaException | RuntimeException e) {
       String message = String.format("Unable to connect to '%s' metastore at '%s'", name,
-          conf.getVar(ConfVars.METASTOREURIS));
+          hiveConf.getVar(ConfVars.METASTOREURIS));
       throw new MetaStoreClientException(message, e);
     }
   }

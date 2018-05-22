@@ -17,20 +17,18 @@ package com.hotels.hcommon.hive.metastore.client.tunnel;
 
 import org.apache.hadoop.hive.conf.HiveConf;
 
-import com.hotels.hcommon.hive.metastore.client.CloseableMetaStoreClient;
-import com.hotels.hcommon.hive.metastore.client.MetaStoreClientFactory;
+import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
+import com.hotels.hcommon.hive.metastore.client.api.MetaStoreClientFactory;
 import com.hotels.hcommon.ssh.SshSettings;
 import com.hotels.hcommon.ssh.TunnelableFactory;
 
-public class TunnelingMetaStoreClientSupplierBuilder {
+public class TunnellingMetaStoreClientSupplierBuilder {
 
-  private static final String DEFAULT_NAME = "HiveMetastoreClient";
   private static final int DEFAULT_PORT = 22;
   private static final String DEFAULT_LOCALHOST = "localhost";
   private static final int DEFAULT_SESSION_TIMEOUT = 60000;
   private static final boolean DEFAULT_STRICT_HOST_KEY_CHECK = true;
 
-  private String name = DEFAULT_NAME;
   private String localHost = DEFAULT_LOCALHOST;
   private int sshPort = DEFAULT_PORT;
   private int timeout = DEFAULT_SESSION_TIMEOUT;
@@ -58,46 +56,41 @@ public class TunnelingMetaStoreClientSupplierBuilder {
 
   private TunnellingMetaStoreClientSupplier build(HiveConf hiveConf, MetaStoreClientFactory metaStoreClientFactory,
       TunnelableFactory<CloseableMetaStoreClient> tunnelableFactory) {
-    return new TunnellingMetaStoreClientSupplier(hiveConf, name, localHost, metaStoreClientFactory,
+    return new TunnellingMetaStoreClientSupplier(hiveConf, localHost, metaStoreClientFactory,
         tunnelableFactory);
   }
 
-  public TunnelingMetaStoreClientSupplierBuilder withName(String name) {
-    this.name = name;
-    return this;
-  }
-
-  public TunnelingMetaStoreClientSupplierBuilder withRoute(String sshRoute) {
+  public TunnellingMetaStoreClientSupplierBuilder withRoute(String sshRoute) {
     this.sshRoute = sshRoute;
     return this;
   }
 
-  public TunnelingMetaStoreClientSupplierBuilder withPort(int sshPort) {
+  public TunnellingMetaStoreClientSupplierBuilder withPort(int sshPort) {
     this.sshPort = sshPort;
     return this;
   }
 
-  public TunnelingMetaStoreClientSupplierBuilder withPrivateKeys(String privateKeys) {
+  public TunnellingMetaStoreClientSupplierBuilder withPrivateKeys(String privateKeys) {
     this.privateKeys = privateKeys;
     return this;
   }
 
-  public TunnelingMetaStoreClientSupplierBuilder withKnownHosts(String knownHosts) {
+  public TunnellingMetaStoreClientSupplierBuilder withKnownHosts(String knownHosts) {
     this.knownHosts = knownHosts;
     return this;
   }
 
-  public TunnelingMetaStoreClientSupplierBuilder withLocalHost(String localHost) {
+  public TunnellingMetaStoreClientSupplierBuilder withLocalHost(String localHost) {
     this.localHost = localHost;
     return this;
   }
 
-  public TunnelingMetaStoreClientSupplierBuilder withTimeout(int timeout) {
+  public TunnellingMetaStoreClientSupplierBuilder withTimeout(int timeout) {
     this.timeout = timeout;
     return this;
   }
 
-  public TunnelingMetaStoreClientSupplierBuilder withStrictHostKeyChecking(String strictHostKeyChecking) {
+  public TunnellingMetaStoreClientSupplierBuilder withStrictHostKeyChecking(String strictHostKeyChecking) {
     this.strictHostKeyChecking = "true".equals(strictHostKeyChecking) || "yes".equals(strictHostKeyChecking);
     return this;
   }

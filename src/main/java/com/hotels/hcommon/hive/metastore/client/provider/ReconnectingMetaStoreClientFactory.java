@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hotels.hcommon.hive.metastore.client;
+
+package com.hotels.hcommon.hive.metastore.client.provider;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -26,6 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hotels.hcommon.hive.metastore.MetaStoreUnavailableException;
+import com.hotels.hcommon.hive.metastore.client.ThriftMetastoreClient;
+import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
 
 public class ReconnectingMetaStoreClientFactory {
 
@@ -107,9 +110,19 @@ public class ReconnectingMetaStoreClientFactory {
 
   }
 
-  public CloseableMetaStoreClient newInstance(HiveConf hiveConf, String name, int reconnectionRetries) {
+  private final HiveConf hiveConf;
+  private final String name;
+  private final int maxRetries;
+
+  private ReconnectingMetaStoreClientFactory(HiveConf hiveConf, String name, int maxRetries) {
+    this.hiveConf = hiveConf;
+    this.name = name;
+    this.maxRetries = maxRetries;
+  }
+
+  public CloseableMetaStoreClient newInstance() {
     ReconnectingMetastoreClientInvocationHandler reconnectingHandler = new ReconnectingMetastoreClientInvocationHandler(
-        hiveConf, name, reconnectionRetries);
+        hiveConf, name, maxRetries);
     return (CloseableMetaStoreClient) Proxy.newProxyInstance(getClass().getClassLoader(), INTERFACES,
         reconnectingHandler);
   }

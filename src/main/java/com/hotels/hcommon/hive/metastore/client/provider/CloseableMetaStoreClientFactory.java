@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hotels.hcommon.hive.metastore.client;
+
+package com.hotels.hcommon.hive.metastore.client.provider;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -25,30 +26,26 @@ import org.apache.thrift.TApplicationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.annotations.VisibleForTesting;
-
+import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
 import com.hotels.hcommon.hive.metastore.compatibility.HiveMetaStoreClientCompatibility;
 import com.hotels.hcommon.hive.metastore.compatibility.HiveMetaStoreClientCompatibility12x;
 
 public final class CloseableMetaStoreClientFactory {
   private static final Logger log = LoggerFactory.getLogger(CloseableMetaStoreClientFactory.class);
 
-  private CloseableMetaStoreClientFactory() {}
+  private final IMetaStoreClient delegate;
+  private final HiveMetaStoreClientCompatibility compatibility;
 
-  public static CloseableMetaStoreClient newInstance(IMetaStoreClient delegate) {
-    HiveMetaStoreClientCompatibility compatibility = null;
-    try {
-      compatibility = new HiveMetaStoreClientCompatibility12x(delegate);
-    } catch (Throwable t) {
-      log.warn("Unable to initialize compatibility", t);
-    }
-    return newInstance(delegate, compatibility);
+  public CloseableMetaStoreClientFactory(IMetaStoreClient delegate) {
+    this(delegate, new HiveMetaStoreClientCompatibility12x(delegate));
   }
 
-  @VisibleForTesting
-  static CloseableMetaStoreClient newInstance(
-      IMetaStoreClient delegate,
-      HiveMetaStoreClientCompatibility compatibility) {
+  public CloseableMetaStoreClientFactory(IMetaStoreClient delegate, HiveMetaStoreClientCompatibility compatibility) {
+    this.delegate = delegate;
+    this.compatibility = compatibility;
+  }
+
+  public CloseableMetaStoreClient newInstance() {
     ClassLoader classLoader = CloseableMetaStoreClient.class.getClassLoader();
     Class<?>[] interfaces = new Class<?>[] { CloseableMetaStoreClient.class };
     CloseableMetaStoreClientInvocationHandler handler = new CloseableMetaStoreClientInvocationHandler(delegate,

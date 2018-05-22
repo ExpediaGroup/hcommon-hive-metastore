@@ -27,9 +27,9 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Supplier;
 
 import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
-import com.hotels.hcommon.hive.metastore.client.CloseableMetaStoreClient;
-import com.hotels.hcommon.hive.metastore.client.HiveMetaStoreClientSupplier;
-import com.hotels.hcommon.hive.metastore.client.MetaStoreClientFactory;
+import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
+import com.hotels.hcommon.hive.metastore.client.provider.HiveMetaStoreClientSupplier;
+import com.hotels.hcommon.hive.metastore.client.api.MetaStoreClientFactory;
 import com.hotels.hcommon.ssh.MethodChecker;
 import com.hotels.hcommon.ssh.SshException;
 import com.hotels.hcommon.ssh.TunnelableFactory;
@@ -39,20 +39,15 @@ public class TunnellingMetaStoreClientSupplier implements Supplier<CloseableMeta
   private final String localHost;
   private final String remoteHost;
   private final int remotePort;
-  private final HiveConf hiveConf;
-  private final String name;
   private final TunnelableFactory<CloseableMetaStoreClient> tunnelableFactory;
   private final MetaStoreClientFactory metaStoreClientFactory;
 
   @VisibleForTesting
   TunnellingMetaStoreClientSupplier(
       HiveConf hiveConf,
-      String name,
       String localHost,
       MetaStoreClientFactory metaStoreClientFactory,
       TunnelableFactory<CloseableMetaStoreClient> tunnelableFactory) {
-    this.hiveConf = hiveConf;
-    this.name = name;
     this.tunnelableFactory = tunnelableFactory;
 
     URI metaStoreUri;
@@ -71,9 +66,7 @@ public class TunnellingMetaStoreClientSupplier implements Supplier<CloseableMeta
   public CloseableMetaStoreClient get() {
     try {
       int localPort = getLocalPort();
-      HiveConf localHiveConf = localHiveConf(hiveConf, localHost, localPort);
-      HiveMetaStoreClientSupplier supplier = new HiveMetaStoreClientSupplier(metaStoreClientFactory, localHiveConf,
-          name);
+      HiveMetaStoreClientSupplier supplier = new HiveMetaStoreClientSupplier(metaStoreClientFactory);
       return (CloseableMetaStoreClient) tunnelableFactory.wrap(supplier, MethodChecker.DEFAULT, localHost, localPort,
           remoteHost, remotePort);
     } catch (Exception e) {
@@ -87,12 +80,5 @@ public class TunnellingMetaStoreClientSupplier implements Supplier<CloseableMeta
     } catch (IOException | RuntimeException e) {
       throw new SshException("Unable to bind to a free localhost port", e);
     }
-  }
-
-  private static HiveConf localHiveConf(HiveConf hiveConf, String localHost, int localPort) {
-    HiveConf localHiveConf = new HiveConf(hiveConf);
-    String proxyMetaStoreUris = "thrift://" + localHost + ":" + localPort;
-    localHiveConf.setVar(ConfVars.METASTOREURIS, proxyMetaStoreUris);
-    return localHiveConf;
   }
 }

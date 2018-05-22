@@ -26,6 +26,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
+import com.hotels.hcommon.hive.metastore.client.provider.CloseableMetaStoreClientFactory;
 import com.hotels.hcommon.hive.metastore.compatibility.HiveMetaStoreClientCompatibility;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -36,7 +38,7 @@ public class CloseableMetaStoreClientFactoryTest {
 
   @Test
   public void typical() throws TException {
-    try (CloseableMetaStoreClient wrapped = CloseableMetaStoreClientFactory.newInstance(delegate)) {
+    try (CloseableMetaStoreClient wrapped = new CloseableMetaStoreClientFactory(delegate).newInstance()) {
       wrapped.unlock(1L);
     }
     verify(delegate).unlock(1L);
@@ -46,7 +48,7 @@ public class CloseableMetaStoreClientFactoryTest {
   @Test
   public void compatibility() throws TException {
     when(delegate.getTable("db", "tbl")).thenThrow(new TApplicationException());
-    try (CloseableMetaStoreClient wrapped = CloseableMetaStoreClientFactory.newInstance(delegate, compatibility)) {
+    try (CloseableMetaStoreClient wrapped = new CloseableMetaStoreClientFactory(delegate, compatibility).newInstance()) {
       wrapped.getTable("db", "tbl");
     }
     verify(compatibility).getTable("db", "tbl");

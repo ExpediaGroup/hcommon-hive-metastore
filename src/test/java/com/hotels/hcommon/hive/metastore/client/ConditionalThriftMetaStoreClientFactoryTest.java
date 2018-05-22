@@ -19,19 +19,20 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.conf.HiveConf.ConfVars;
 import org.junit.Rule;
 import org.junit.Test;
 
 import com.hotels.beeju.ThriftHiveMetaStoreJUnitRule;
 import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
+import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
+import com.hotels.hcommon.hive.metastore.client.provider.ConditionalThriftMetaStoreClientFactory;
 
-public class ThriftMetaStoreClientFactoryTest {
+public class ConditionalThriftMetaStoreClientFactoryTest {
 
   public @Rule ThriftHiveMetaStoreJUnitRule hive = new ThriftHiveMetaStoreJUnitRule();
 
-  private final ThriftMetaStoreClientFactory factory = new ThriftMetaStoreClientFactory();
+  private final ConditionalThriftMetaStoreClientFactory factory = new ConditionalThriftMetaStoreClientFactory(hive.conf(), "name");
 
   @Test
   public void accepts() {
@@ -43,15 +44,14 @@ public class ThriftMetaStoreClientFactoryTest {
 
   @Test
   public void newInstance() throws Exception {
-    CloseableMetaStoreClient client = factory.newInstance(hive.conf(), "name");
+    CloseableMetaStoreClient client = factory.newInstance();
     assertNotNull(client.getDatabase(hive.databaseName()));
   }
 
   @Test(expected = MetaStoreClientException.class)
   public void newInstanceCannotConnectThrowsMetaStoreClientException() throws Exception {
-    HiveConf conf = new HiveConf();
-    conf.setVar(ConfVars.METASTOREURIS, "thrift://ghost:1234");
-    factory.newInstance(conf, "name");
+    hive.conf().setVar(ConfVars.METASTOREURIS, "thrift://ghost:1234");
+    factory.newInstance();
   }
 
 }

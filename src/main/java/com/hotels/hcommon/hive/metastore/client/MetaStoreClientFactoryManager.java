@@ -18,16 +18,18 @@ package com.hotels.hcommon.hive.metastore.client;
 import java.util.List;
 
 import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
+import com.hotels.hcommon.hive.metastore.client.api.ConditionalMetaStoreClientFactory;
+import com.hotels.hcommon.hive.metastore.client.api.MetaStoreClientFactory;
 
 public class MetaStoreClientFactoryManager {
-  private final List<MetaStoreClientFactory> metaStoreClientFactories;
+  private final List<ConditionalMetaStoreClientFactory> metaStoreClientFactories;
 
-  public MetaStoreClientFactoryManager(List<MetaStoreClientFactory> metaStoreClientFactories) {
+  public MetaStoreClientFactoryManager(List<ConditionalMetaStoreClientFactory> metaStoreClientFactories) {
     this.metaStoreClientFactories = metaStoreClientFactories;
   }
 
   public MetaStoreClientFactory factoryForUrl(String url) {
-    for (MetaStoreClientFactory metaStoreClientFactory : metaStoreClientFactories) {
+    for (ConditionalMetaStoreClientFactory metaStoreClientFactory : metaStoreClientFactories) {
       if (metaStoreClientFactory.accepts(url)) {
         return metaStoreClientFactory;
       }

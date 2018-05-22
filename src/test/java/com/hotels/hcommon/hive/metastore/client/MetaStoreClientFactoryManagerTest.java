@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.hotels.hcommon.hive.metastore.client;
 
 import static org.junit.Assert.assertTrue;
@@ -20,22 +21,29 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.hadoop.hive.conf.HiveConf;
 import org.junit.Test;
+
+import com.hotels.hcommon.hive.metastore.client.api.ConditionalMetaStoreClientFactory;
+import com.hotels.hcommon.hive.metastore.client.api.MetaStoreClientFactory;
+import com.hotels.hcommon.hive.metastore.client.provider.ConditionalThriftMetaStoreClientFactory;
 
 public class MetaStoreClientFactoryManagerTest {
 
   @Test
   public void factoryForThrift() {
-    List<MetaStoreClientFactory> list = Collections
-        .<MetaStoreClientFactory> singletonList(new ThriftMetaStoreClientFactory());
+    List<ConditionalMetaStoreClientFactory> list = Collections
+        .<ConditionalMetaStoreClientFactory> singletonList(
+            new ConditionalThriftMetaStoreClientFactory(new HiveConf(), "name"));
     MetaStoreClientFactoryManager factoryManager = new MetaStoreClientFactoryManager(list);
-    MetaStoreClientFactory clientFactory = factoryManager.factoryForUrl(ThriftMetaStoreClientFactory.ACCEPT_PREFIX);
-    assertTrue(clientFactory instanceof ThriftMetaStoreClientFactory);
+    MetaStoreClientFactory clientFactory = factoryManager.factoryForUrl(
+        ConditionalThriftMetaStoreClientFactory.ACCEPT_PREFIX);
+    assertTrue(clientFactory instanceof ConditionalThriftMetaStoreClientFactory);
   }
 
   @Test(expected = RuntimeException.class)
   public void factoryForUnsupportedUrl() {
-    List<MetaStoreClientFactory> list = Collections.emptyList();
+    List<ConditionalMetaStoreClientFactory> list = Collections.emptyList();
     MetaStoreClientFactoryManager factoryManager = new MetaStoreClientFactoryManager(list);
     factoryManager.factoryForUrl("unsupported:///bla");
   }

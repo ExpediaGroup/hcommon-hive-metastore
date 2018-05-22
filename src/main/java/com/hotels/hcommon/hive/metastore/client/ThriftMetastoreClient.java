@@ -42,7 +42,7 @@ import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class ThriftMetastoreClient implements Closeable {
+public class ThriftMetastoreClient implements Closeable {
 
   private static final Logger LOG = LoggerFactory.getLogger(ThriftMetastoreClient.class);
 
@@ -238,7 +238,7 @@ class ThriftMetastoreClient implements Closeable {
     return false;
   }
 
-  protected ThriftHiveMetastore.Iface getClient() {
+  public ThriftHiveMetastore.Iface getClient() {
     return client;
   }
 

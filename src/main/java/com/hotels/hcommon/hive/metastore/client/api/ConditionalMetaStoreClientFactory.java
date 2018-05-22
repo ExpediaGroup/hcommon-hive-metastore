@@ -13,14 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hotels.hcommon.hive.metastore.client;
+package com.hotels.hcommon.hive.metastore.client.api;
 
-import org.apache.hadoop.hive.conf.HiveConf;
-
-import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
-
-public interface MetaStoreClientFactory {
-  boolean accepts(String url);
-
-  CloseableMetaStoreClient newInstance(HiveConf conf, String name) throws MetaStoreClientException;
+public interface ConditionalMetaStoreClientFactory extends MetaStoreClientFactory {
+  public boolean accepts(String url);
 }

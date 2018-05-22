@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hotels.hcommon.hive.metastore.client;
 
-import org.apache.hadoop.hive.conf.HiveConf;
+package com.hotels.hcommon.hive.metastore.client.provider;
 
+import com.google.common.base.Supplier;
+
+import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
+import com.hotels.hcommon.hive.metastore.client.api.MetaStoreClientFactory;
 import com.hotels.hcommon.ssh.TunnelableSupplier;
 
-public class HiveMetaStoreClientSupplier implements TunnelableSupplier<CloseableMetaStoreClient> {
+public class HiveMetaStoreClientSupplier implements TunnelableSupplier<CloseableMetaStoreClient>,
+    Supplier<CloseableMetaStoreClient> {
   private final MetaStoreClientFactory metaStoreClientFactory;
-  private final String name;
-  private final HiveConf hiveConf;
 
-  public HiveMetaStoreClientSupplier(MetaStoreClientFactory metaStoreClientFactory, HiveConf hiveConf, String name) {
+  public HiveMetaStoreClientSupplier(MetaStoreClientFactory metaStoreClientFactory) {
     this.metaStoreClientFactory = metaStoreClientFactory;
-    this.hiveConf = hiveConf;
-    this.name = name;
   }
 
   @Override
   public CloseableMetaStoreClient get() {
-    return metaStoreClientFactory.newInstance(hiveConf, name);
+    return metaStoreClientFactory.newInstance();
   }
 }
