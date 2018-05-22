@@ -19,6 +19,8 @@ import java.io.Closeable;
 
 import org.apache.hadoop.hive.metastore.IMetaStoreClient;
 
-public interface CloseableMetaStoreClient extends IMetaStoreClient, Closeable {
+import com.hotels.hcommon.ssh.Tunnelable;
+
+public interface CloseableMetaStoreClient extends IMetaStoreClient, Closeable, Tunnelable {
 
 }

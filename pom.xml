@@ -38,6 +38,13 @@
       <version>${hive.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>com.hotels</groupId>
+      <artifactId>hcommon-ssh</artifactId>
+      <scope>provided</scope>
+      <version>1.0.0</version>
+    </dependency>
+
     <!-- Test -->
     <dependency>
       <groupId>junit</groupId>
