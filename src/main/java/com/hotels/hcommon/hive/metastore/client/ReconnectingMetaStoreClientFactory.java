@@ -28,8 +28,9 @@ import org.slf4j.LoggerFactory;
 
 import com.hotels.hcommon.hive.metastore.MetaStoreUnavailableException;
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
+import com.hotels.hcommon.hive.metastore.client.api.MetaStoreClientFactory;
 
-public class ReconnectingMetaStoreClientFactory {
+public class ReconnectingMetaStoreClientFactory implements MetaStoreClientFactory {
 
   static final Class<?>[] INTERFACES = new Class<?>[] { CloseableMetaStoreClient.class };
 
@@ -113,7 +114,7 @@ public class ReconnectingMetaStoreClientFactory {
   private final String name;
   private final int maxRetries;
 
-  private ReconnectingMetaStoreClientFactory(HiveConf hiveConf, String name, int maxRetries) {
+  public ReconnectingMetaStoreClientFactory(HiveConf hiveConf, String name, int maxRetries) {
     this.hiveConf = hiveConf;
     this.name = name;
     this.maxRetries = maxRetries;
