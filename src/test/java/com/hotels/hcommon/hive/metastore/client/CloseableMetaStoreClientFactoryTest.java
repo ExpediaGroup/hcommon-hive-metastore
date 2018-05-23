@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.hotels.hcommon.hive.metastore.client;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.apache.hadoop.hive.metastore.IMetaStoreClient;
+import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 import org.apache.thrift.TApplicationException;
 import org.apache.thrift.TException;
 import org.junit.Test;
@@ -27,13 +28,12 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
-import com.hotels.hcommon.hive.metastore.client.provider.CloseableMetaStoreClientFactory;
 import com.hotels.hcommon.hive.metastore.compatibility.HiveMetaStoreClientCompatibility;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CloseableMetaStoreClientFactoryTest {
 
-  private @Mock IMetaStoreClient delegate;
+  private @Mock HiveMetaStoreClient delegate;
   private @Mock HiveMetaStoreClientCompatibility compatibility;
 
   @Test
@@ -48,7 +48,8 @@ public class CloseableMetaStoreClientFactoryTest {
   @Test
   public void compatibility() throws TException {
     when(delegate.getTable("db", "tbl")).thenThrow(new TApplicationException());
-    try (CloseableMetaStoreClient wrapped = new CloseableMetaStoreClientFactory(delegate, compatibility).newInstance()) {
+    try (CloseableMetaStoreClient wrapped = new CloseableMetaStoreClientFactory(delegate,
+        compatibility).newInstance()) {
       wrapped.getTable("db", "tbl");
     }
     verify(compatibility).getTable("db", "tbl");

@@ -1,0 +1,83 @@
+----------------------------------------------------------------
+Wed May 23 00:16:17 BST 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance a816c00e-0163-8a23-945d-000008359690 
+on database directory /Users/cedwards/Documents/workspace/hcommon-hive-metastore/metastore_db with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
+Loaded from file:/Users/cedwards/.m2/repository/org/apache/derby/derby/10.13.1.1/derby-10.13.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_112-b16
+user.dir=/Users/cedwards/Documents/workspace/hcommon-hive-metastore
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.12.6
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Wed May 23 00:16:19 BST 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance 20e1c02b-0163-8a23-945d-000008359690 
+on database directory memory:/Users/cedwards/Documents/workspace/hcommon-hive-metastore/cfdbd05b-3ebf-44ab-8fb0-9c9b57aa91d6 with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
+Loaded from file:/Users/cedwards/.m2/repository/org/apache/derby/derby/10.13.1.1/derby-10.13.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_112-b16
+user.dir=/Users/cedwards/Documents/workspace/hcommon-hive-metastore
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.12.6
+derby.system.home=null
+derby.stream.error.file=/private/var/folders/jj/xjyn53ws44l7x5n_pnh0h3x067p7tm/T/derby4556620027420624754.log
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Wed May 23 00:16:22 BST 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance 2a20838c-0163-8a23-945d-000008359690 
+on database directory memory:/Users/cedwards/Documents/workspace/hcommon-hive-metastore/385cc850-233a-4fb4-ad20-a43da6a5fe5f with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
+Loaded from file:/Users/cedwards/.m2/repository/org/apache/derby/derby/10.13.1.1/derby-10.13.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_112-b16
+user.dir=/Users/cedwards/Documents/workspace/hcommon-hive-metastore
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.12.6
+derby.system.home=null
+derby.stream.error.file=/private/var/folders/jj/xjyn53ws44l7x5n_pnh0h3x067p7tm/T/derby8619163893441286854.log
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Wed May 23 00:16:25 BST 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance a27d86dd-0163-8a23-945d-000008359690 
+on database directory memory:/Users/cedwards/Documents/workspace/hcommon-hive-metastore/73a0b489-aa76-4f9c-a25f-b9810f774bfd with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
+Loaded from file:/Users/cedwards/.m2/repository/org/apache/derby/derby/10.13.1.1/derby-10.13.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_112-b16
+user.dir=/Users/cedwards/Documents/workspace/hcommon-hive-metastore
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.12.6
+derby.system.home=null
+derby.stream.error.file=/private/var/folders/jj/xjyn53ws44l7x5n_pnh0h3x067p7tm/T/derby9029325115767273972.log
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Wed May 23 00:16:27 BST 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance 9ac2ca2e-0163-8a23-945d-000008359690 
+on database directory memory:/Users/cedwards/Documents/workspace/hcommon-hive-metastore/b1be4097-a9bf-4a13-a605-04e7ede3a5cb with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
+Loaded from file:/Users/cedwards/.m2/repository/org/apache/derby/derby/10.13.1.1/derby-10.13.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_112-b16
+user.dir=/Users/cedwards/Documents/workspace/hcommon-hive-metastore
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.12.6
+derby.system.home=null
+derby.stream.error.file=/private/var/folders/jj/xjyn53ws44l7x5n_pnh0h3x067p7tm/T/derby121155775904329314.log
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Wed May 23 00:16:30 BST 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance 628b0de8-0163-8a23-945d-000008359690 
+on database directory memory:/Users/cedwards/Documents/workspace/hcommon-hive-metastore/473089e6-cd11-4785-a19f-5b23366c7962 with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
+Loaded from file:/Users/cedwards/.m2/repository/org/apache/derby/derby/10.13.1.1/derby-10.13.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_112-b16
+user.dir=/Users/cedwards/Documents/workspace/hcommon-hive-metastore
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.12.6
+derby.system.home=null
+derby.stream.error.file=/private/var/folders/jj/xjyn53ws44l7x5n_pnh0h3x067p7tm/T/derby6409445852748378909.log
+Database Class Loader started - derby.database.classpath=''

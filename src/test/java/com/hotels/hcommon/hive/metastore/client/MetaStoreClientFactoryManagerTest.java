@@ -26,7 +26,6 @@ import org.junit.Test;
 
 import com.hotels.hcommon.hive.metastore.client.api.ConditionalMetaStoreClientFactory;
 import com.hotels.hcommon.hive.metastore.client.api.MetaStoreClientFactory;
-import com.hotels.hcommon.hive.metastore.client.provider.ConditionalThriftMetaStoreClientFactory;
 
 public class MetaStoreClientFactoryManagerTest {
 
@@ -34,11 +33,11 @@ public class MetaStoreClientFactoryManagerTest {
   public void factoryForThrift() {
     List<ConditionalMetaStoreClientFactory> list = Collections
         .<ConditionalMetaStoreClientFactory> singletonList(
-            new ConditionalThriftMetaStoreClientFactory(new HiveConf(), "name"));
+            new ConditionalRetryingMetaStoreClientFactory(new HiveConf(), "name"));
     MetaStoreClientFactoryManager factoryManager = new MetaStoreClientFactoryManager(list);
     MetaStoreClientFactory clientFactory = factoryManager.factoryForUrl(
-        ConditionalThriftMetaStoreClientFactory.ACCEPT_PREFIX);
-    assertTrue(clientFactory instanceof ConditionalThriftMetaStoreClientFactory);
+        ConditionalRetryingMetaStoreClientFactory.ACCEPT_PREFIX);
+    assertTrue(clientFactory instanceof ConditionalRetryingMetaStoreClientFactory);
   }
 
   @Test(expected = RuntimeException.class)

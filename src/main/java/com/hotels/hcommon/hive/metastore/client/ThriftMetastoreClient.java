@@ -42,7 +42,7 @@ import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ThriftMetastoreClient implements Closeable {
+class ThriftMetastoreClient implements Closeable {
 
   private static final Logger LOG = LoggerFactory.getLogger(ThriftMetastoreClient.class);
 
@@ -59,7 +59,7 @@ public class ThriftMetastoreClient implements Closeable {
   private int retries = 5;
   private long retryDelaySeconds = 0;
 
-  public ThriftMetastoreClient(HiveConf conf) {
+  ThriftMetastoreClient(HiveConf conf) {
     this.conf = conf;
     String msUri = conf.getVar(ConfVars.METASTOREURIS);
 
@@ -238,7 +238,7 @@ public class ThriftMetastoreClient implements Closeable {
     return false;
   }
 
-  public ThriftHiveMetastore.Iface getClient() {
+  protected ThriftHiveMetastore.Iface getClient() {
     return client;
   }
 

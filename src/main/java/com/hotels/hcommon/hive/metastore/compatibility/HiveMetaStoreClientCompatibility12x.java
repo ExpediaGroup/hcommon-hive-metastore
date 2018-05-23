@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.hotels.hcommon.hive.metastore.compatibility;
 
 import java.lang.reflect.Field;

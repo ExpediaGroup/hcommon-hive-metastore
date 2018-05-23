@@ -1,0 +1,83 @@
+/**
+ * Copyright (C) 2017-2018 Expedia Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.hotels.hcommon.hive.metastore.client;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import org.apache.hadoop.hive.conf.HiveConf;
+import org.apache.hadoop.hive.conf.HiveConf.ConfVars;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Supplier;
+
+import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
+import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
+import com.hotels.hcommon.hive.metastore.client.api.MetaStoreClientFactory;
+import com.hotels.hcommon.ssh.MethodChecker;
+import com.hotels.hcommon.ssh.SshException;
+import com.hotels.hcommon.ssh.TunnelableFactory;
+
+public class TunnellingMetaStoreClientSupplier implements Supplier<CloseableMetaStoreClient> {
+
+  private final String localHost;
+  private final String remoteHost;
+  private final int remotePort;
+  private final TunnelableFactory<CloseableMetaStoreClient> tunnelableFactory;
+  private final MetaStoreClientFactory metaStoreClientFactory;
+
+  @VisibleForTesting
+  TunnellingMetaStoreClientSupplier(
+      HiveConf hiveConf,
+      String localHost,
+      MetaStoreClientFactory metaStoreClientFactory,
+      TunnelableFactory<CloseableMetaStoreClient> tunnelableFactory) {
+    this.tunnelableFactory = tunnelableFactory;
+
+    URI metaStoreUri;
+    try {
+      metaStoreUri = new URI(hiveConf.getVar(ConfVars.METASTOREURIS));
+    } catch (URISyntaxException e) {
+      throw new RuntimeException(e);
+    }
+    remoteHost = metaStoreUri.getHost();
+    remotePort = metaStoreUri.getPort();
+    this.localHost = localHost;
+    this.metaStoreClientFactory = metaStoreClientFactory;
+  }
+
+  @Override
+  public CloseableMetaStoreClient get() {
+    try {
+      int localPort = getLocalPort();
+      HiveMetaStoreClientSupplier supplier = new HiveMetaStoreClientSupplier(metaStoreClientFactory);
+      return (CloseableMetaStoreClient) tunnelableFactory.wrap(supplier, MethodChecker.DEFAULT, localHost, localPort,
+          remoteHost, remotePort);
+    } catch (Exception e) {
+      throw new MetaStoreClientException("Unable to create tunnelled HiveMetaStoreClient", e);
+    }
+  }
+
+  private static int getLocalPort() {
+    try (ServerSocket socket = new ServerSocket(0)) {
+      return socket.getLocalPort();
+    } catch (IOException | RuntimeException e) {
+      throw new SshException("Unable to bind to a free localhost port", e);
+    }
+  }
+}

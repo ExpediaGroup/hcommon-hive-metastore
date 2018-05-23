@@ -13,26 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.hotels.hcommon.hive.metastore.client;
 
-import static org.mockito.Mockito.verify;
+import com.google.common.base.Supplier;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
+import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
 import com.hotels.hcommon.hive.metastore.client.api.MetaStoreClientFactory;
+import com.hotels.hcommon.ssh.TunnelableSupplier;
 
-@RunWith(MockitoJUnitRunner.class)
-public class HiveMetaStoreClientSupplierTest {
+public class HiveMetaStoreClientSupplier implements TunnelableSupplier<CloseableMetaStoreClient>,
+    Supplier<CloseableMetaStoreClient> {
+  private final MetaStoreClientFactory metaStoreClientFactory;
 
-  private @Mock MetaStoreClientFactory metaStoreClientFactory;
+  public HiveMetaStoreClientSupplier(MetaStoreClientFactory metaStoreClientFactory) {
+    this.metaStoreClientFactory = metaStoreClientFactory;
+  }
 
-  @Test
-  public void get() {
-    HiveMetaStoreClientSupplier metaStoreClientSupplier = new HiveMetaStoreClientSupplier(metaStoreClientFactory);
-    metaStoreClientSupplier.get();
-    verify(metaStoreClientFactory).newInstance();
+  @Override
+  public CloseableMetaStoreClient get() {
+    return metaStoreClientFactory.newInstance();
   }
 }
