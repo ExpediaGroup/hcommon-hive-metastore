@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hotels.hcommon.hive.metastore.client;
+package com.hotels.hcommon.hive.metastore.client.reconnecting;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -42,9 +42,9 @@ import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class ThriftMetastoreClient implements Closeable {
+class ReconnectingThriftMetaStoreClient implements Closeable {
 
-  private static final Logger LOG = LoggerFactory.getLogger(ThriftMetastoreClient.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ReconnectingThriftMetaStoreClient.class);
 
   private static final AtomicInteger CONN_COUNT = new AtomicInteger(0);
 
@@ -59,7 +59,7 @@ class ThriftMetastoreClient implements Closeable {
   private int retries = 5;
   private long retryDelaySeconds = 0;
 
-  ThriftMetastoreClient(HiveConf conf) {
+  ReconnectingThriftMetaStoreClient(HiveConf conf) {
     this.conf = conf;
     String msUri = conf.getVar(ConfVars.METASTOREURIS);
 

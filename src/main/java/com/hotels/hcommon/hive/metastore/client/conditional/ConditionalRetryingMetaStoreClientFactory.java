@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hotels.hcommon.hive.metastore.client;
+package com.hotels.hcommon.hive.metastore.client.conditional;
 
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.conf.HiveConf.ConfVars;
@@ -32,6 +32,7 @@ import com.google.common.base.Strings;
 import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
 import com.hotels.hcommon.hive.metastore.client.api.ConditionalMetaStoreClientFactory;
+import com.hotels.hcommon.hive.metastore.client.closeable.CloseableMetaStoreClientFactory;
 
 public class ConditionalRetryingMetaStoreClientFactory implements ConditionalMetaStoreClientFactory {
   private static final Logger LOG = LoggerFactory.getLogger(ConditionalRetryingMetaStoreClientFactory.class);

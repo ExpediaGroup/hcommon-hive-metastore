@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hotels.hcommon.hive.metastore.client;
+package com.hotels.hcommon.hive.metastore.client.closeable;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

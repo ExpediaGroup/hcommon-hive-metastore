@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hotels.hcommon.hive.metastore.client;
+package com.hotels.hcommon.hive.metastore.client.tunnelling;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -35,6 +35,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.jcraft.jsch.JSchException;
 
 import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
+import com.hotels.hcommon.hive.metastore.client.conditional.ConditionalRetryingMetaStoreClientFactory;
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
 import com.hotels.hcommon.ssh.MethodChecker;
 import com.hotels.hcommon.ssh.TunnelableFactory;

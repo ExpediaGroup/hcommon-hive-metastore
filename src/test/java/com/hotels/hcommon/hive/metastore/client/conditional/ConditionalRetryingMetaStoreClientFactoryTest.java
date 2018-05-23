@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hotels.hcommon.hive.metastore.client;
+package com.hotels.hcommon.hive.metastore.client.conditional;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;

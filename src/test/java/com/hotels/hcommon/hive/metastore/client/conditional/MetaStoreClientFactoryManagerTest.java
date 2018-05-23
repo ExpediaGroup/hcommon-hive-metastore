@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hotels.hcommon.hive.metastore.client;
+package com.hotels.hcommon.hive.metastore.client.conditional;
 
 import static org.junit.Assert.assertTrue;
 
@@ -26,6 +26,8 @@ import org.junit.Test;
 
 import com.hotels.hcommon.hive.metastore.client.api.ConditionalMetaStoreClientFactory;
 import com.hotels.hcommon.hive.metastore.client.api.MetaStoreClientFactory;
+import com.hotels.hcommon.hive.metastore.client.conditional.ConditionalRetryingMetaStoreClientFactory;
+import com.hotels.hcommon.hive.metastore.client.conditional.MetaStoreClientFactoryManager;
 
 public class MetaStoreClientFactoryManagerTest {
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hotels.hcommon.hive.metastore.client;
+package com.hotels.hcommon.hive.metastore.client.tunnelling;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -27,6 +27,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Supplier;
 
 import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
+import com.hotels.hcommon.hive.metastore.client.HiveMetaStoreClientSupplier;
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
 import com.hotels.hcommon.hive.metastore.client.api.MetaStoreClientFactory;
 import com.hotels.hcommon.ssh.MethodChecker;
