@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hotels.hcommon.hive.metastore.client.conditional;
+
+package com.hotels.hcommon.hive.metastore.client.retrying;
 
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.conf.HiveConf.ConfVars;
@@ -26,23 +27,18 @@ import org.apache.hadoop.hive.metastore.api.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Strings;
-
 import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
-import com.hotels.hcommon.hive.metastore.client.api.ConditionalMetaStoreClientFactory;
+import com.hotels.hcommon.hive.metastore.client.api.MetaStoreClientFactory;
 import com.hotels.hcommon.hive.metastore.client.closeable.CloseableMetaStoreClientFactory;
 
-public class ConditionalRetryingMetaStoreClientFactory implements ConditionalMetaStoreClientFactory {
-  private static final Logger LOG = LoggerFactory.getLogger(ConditionalRetryingMetaStoreClientFactory.class);
-
-  public static final String ACCEPT_PREFIX = "thrift:";
+public class RetryingHiveMetaStoreClientFactory implements MetaStoreClientFactory {
+  private static final Logger LOG = LoggerFactory.getLogger(RetryingHiveMetaStoreClientFactory.class);
 
   private final HiveConf hiveConf;
   private final String name;
 
-
-  public ConditionalRetryingMetaStoreClientFactory(HiveConf hiveConf, String name) {
+  public RetryingHiveMetaStoreClientFactory(HiveConf hiveConf, String name) {
     this.hiveConf = hiveConf;
     this.name = name;
   }
@@ -62,10 +58,5 @@ public class ConditionalRetryingMetaStoreClientFactory implements ConditionalMet
           hiveConf.getVar(ConfVars.METASTOREURIS));
       throw new MetaStoreClientException(message, e);
     }
-  }
-
-  @Override
-  public boolean accepts(String url) {
-    return Strings.nullToEmpty(url).startsWith(ACCEPT_PREFIX);
   }
 }

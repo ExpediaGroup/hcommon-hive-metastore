@@ -66,6 +66,4 @@ public final class CloseableMetaStoreClientFactory implements MetaStoreClientFac
         compatibility);
     return (CloseableMetaStoreClient) Proxy.newProxyInstance(classLoader, interfaces, handler);
   }
-
-
 }

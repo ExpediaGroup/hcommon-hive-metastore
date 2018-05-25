@@ -18,6 +18,5 @@ package com.hotels.hcommon.hive.metastore.client.api;
 import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
 
 public interface MetaStoreClientFactory {
-
   CloseableMetaStoreClient newInstance() throws MetaStoreClientException;
 }

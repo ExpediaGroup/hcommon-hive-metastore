@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hotels.hcommon.hive.metastore.client.conditional;
+package com.hotels.hcommon.hive.metastore.client.retrying;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.conf.HiveConf.ConfVars;
@@ -28,23 +26,13 @@ import com.hotels.beeju.ThriftHiveMetaStoreJUnitRule;
 import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
 
-public class ConditionalRetryingMetaStoreClientFactoryTest {
+public class RetryingHiveMetaStoreClientFactoryTest {
 
   public @Rule ThriftHiveMetaStoreJUnitRule hive = new ThriftHiveMetaStoreJUnitRule();
 
-
-  @Test
-  public void accepts() {
-    ConditionalRetryingMetaStoreClientFactory factory = new ConditionalRetryingMetaStoreClientFactory(hive.conf(), "name");
-    assertTrue(factory.accepts("thrift:"));
-    assertFalse(factory.accepts("something-else:"));
-    assertFalse(factory.accepts(""));
-    assertFalse(factory.accepts(null));
-  }
-
   @Test
   public void newInstance() throws Exception {
-    ConditionalRetryingMetaStoreClientFactory factory = new ConditionalRetryingMetaStoreClientFactory(hive.conf(), "name");
+    RetryingHiveMetaStoreClientFactory factory = new RetryingHiveMetaStoreClientFactory(hive.conf(), "name");
     CloseableMetaStoreClient client = factory.newInstance();
     assertNotNull(client.getDatabase(hive.databaseName()));
   }
@@ -53,7 +41,7 @@ public class ConditionalRetryingMetaStoreClientFactoryTest {
   public void newInstanceCannotConnectThrowsMetaStoreClientException() throws Exception {
     HiveConf conf = new HiveConf();
     conf.setVar(ConfVars.METASTOREURIS, "thrift://ghost:1234");
-    ConditionalRetryingMetaStoreClientFactory factory = new ConditionalRetryingMetaStoreClientFactory(conf, "name");
+    RetryingHiveMetaStoreClientFactory factory = new RetryingHiveMetaStoreClientFactory(conf, "name");
     factory.newInstance();
   }
 

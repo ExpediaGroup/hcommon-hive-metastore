@@ -35,8 +35,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.jcraft.jsch.JSchException;
 
 import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
-import com.hotels.hcommon.hive.metastore.client.conditional.ConditionalRetryingMetaStoreClientFactory;
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
+import com.hotels.hcommon.hive.metastore.client.retrying.RetryingHiveMetaStoreClientFactory;
 import com.hotels.hcommon.ssh.MethodChecker;
 import com.hotels.hcommon.ssh.TunnelableFactory;
 import com.hotels.hcommon.ssh.TunnelableSupplier;
@@ -50,7 +50,7 @@ public class TunnellingMetaStoreClientSupplierTest {
   private static final String REMOTE_HOST = "emrmaster";
 
   private @Mock TunnelableFactory<CloseableMetaStoreClient> tunnelableFactory;
-  private @Mock ConditionalRetryingMetaStoreClientFactory metaStoreClientFactory;
+  private @Mock RetryingHiveMetaStoreClientFactory metaStoreClientFactory;
   private @Mock CloseableMetaStoreClient metaStoreClient;
 
   private final HiveConf hiveConf = new HiveConf();

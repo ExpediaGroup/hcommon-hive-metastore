@@ -21,7 +21,5 @@ import org.apache.hadoop.hive.metastore.api.Table;
 import org.apache.thrift.TException;
 
 public interface HiveMetaStoreClientCompatibility {
-
   Table getTable(String dbname, String name) throws MetaException, TException, NoSuchObjectException;
-
 }
