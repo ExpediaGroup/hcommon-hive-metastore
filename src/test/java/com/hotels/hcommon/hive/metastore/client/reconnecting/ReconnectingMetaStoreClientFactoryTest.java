@@ -44,7 +44,7 @@ public class ReconnectingMetaStoreClientFactoryTest {
 
   @Before
   public void init() {
-    conf.setVar(HiveConf.ConfVars.METASTOREURIS, "hrift://ip-12-34-567-891.us-east-1.compute.internal:9083");
+    conf.setVar(HiveConf.ConfVars.METASTOREURIS, "thrift://ip-12-34-567-891.us-east-1.compute.internal:9083");
     conf.setIntVar(HiveConf.ConfVars.METASTORETHRIFTCONNECTIONRETRIES, 1);
     conf.setTimeVar(HiveConf.ConfVars.METASTORE_CLIENT_CONNECT_RETRY_DELAY, 10L, TimeUnit.SECONDS);
     metaStoreClientFactory = spy(new ReconnectingMetaStoreClientFactory(conf, name, retries));
