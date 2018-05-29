@@ -18,12 +18,16 @@ package com.hotels.hcommon.hive.metastore.client.closeable;
 
 import java.lang.reflect.Proxy;
 
+import org.apache.hadoop.hive.conf.HiveConf;
+import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 import org.apache.hadoop.hive.metastore.IMetaStoreClient;
+import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
 import com.hotels.hcommon.hive.metastore.client.api.MetaStoreClientFactory;
 import com.hotels.hcommon.hive.metastore.compatibility.HiveMetaStoreClientCompatibility;
@@ -37,6 +41,10 @@ public final class CloseableMetaStoreClientFactory implements MetaStoreClientFac
 
   private HiveMetaStoreClientCompatibility compatibility;
 
+  public CloseableMetaStoreClientFactory(HiveConf conf) {
+    this(clientForConf(conf));
+  }
+
   public CloseableMetaStoreClientFactory(IMetaStoreClient delegate) {
     this.delegate = delegate;
   }
@@ -45,6 +53,14 @@ public final class CloseableMetaStoreClientFactory implements MetaStoreClientFac
   CloseableMetaStoreClientFactory(IMetaStoreClient delegate, HiveMetaStoreClientCompatibility compatibility) {
     this.delegate = delegate;
     this.compatibility = compatibility;
+  }
+
+  private static HiveMetaStoreClient clientForConf(HiveConf conf) {
+    try {
+      return new HiveMetaStoreClient(conf);
+    } catch (MetaException e) {
+      throw new MetaStoreClientException(e.getMessage());
+    }
   }
 
   private void tryLoadCompatibility() {
