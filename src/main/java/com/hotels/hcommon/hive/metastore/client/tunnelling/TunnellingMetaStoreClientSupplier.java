@@ -41,7 +41,6 @@ public class TunnellingMetaStoreClientSupplier implements Supplier<CloseableMeta
   private final HiveConf hiveConf;
   private final String name;
   private final String localHost;
-  private final int localPort;
   private final String remoteHost;
   private final int remotePort;
   private final TunnelableFactory<CloseableMetaStoreClient> tunnelableFactory;
@@ -67,13 +66,13 @@ public class TunnellingMetaStoreClientSupplier implements Supplier<CloseableMeta
     remotePort = metaStoreUri.getPort();
 
     this.localHost = localHost;
-    localPort = getLocalPort();
     this.metaStoreClientFactory = metaStoreClientFactory;
   }
 
   @Override
   public CloseableMetaStoreClient get() {
     try {
+      int localPort = getLocalPort();
       HiveConf localHiveConf = localHiveConf(hiveConf, localHost, localPort);
       HiveMetaStoreClientSupplier supplier = new HiveMetaStoreClientSupplier(metaStoreClientFactory, localHiveConf,
           name);
