@@ -34,10 +34,10 @@ import com.hotels.hcommon.hive.metastore.client.api.MetaStoreClientFactory;
 public class CloseableMetaStoreClientFactory implements MetaStoreClientFactory {
   private static final Logger log = LoggerFactory.getLogger(CloseableMetaStoreClientFactory.class);
 
-  private final Hive12CompatibleClientFactory hive12CompatibleClientFactory;
+  private final Hive12CompatibleMetaStoreClientFactory hive12CompatibleClientFactory;
 
   public CloseableMetaStoreClientFactory() {
-    this.hive12CompatibleClientFactory = new Hive12CompatibleClientFactory();
+    this.hive12CompatibleClientFactory = new Hive12CompatibleMetaStoreClientFactory();
   }
 
   @Override

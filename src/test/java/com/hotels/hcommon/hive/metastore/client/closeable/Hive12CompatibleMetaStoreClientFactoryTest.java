@@ -27,12 +27,12 @@ import org.mockito.Mock;
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
 import com.hotels.hcommon.hive.metastore.compatibility.HiveMetaStoreClientCompatibility;
 
-public class Hive12CompatibleClientFactoryTest {
+public class Hive12CompatibleMetaStoreClientFactoryTest {
 
   private @Mock HiveMetaStoreClient delegate;
   private @Mock HiveMetaStoreClientCompatibility compatibility;
 
-  private Hive12CompatibleClientFactory factory = new Hive12CompatibleClientFactory();
+  private Hive12CompatibleMetaStoreClientFactory factory = new Hive12CompatibleMetaStoreClientFactory();
 
   @Test
   public void typical() throws TException {

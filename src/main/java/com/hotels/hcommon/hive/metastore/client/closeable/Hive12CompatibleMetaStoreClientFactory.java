@@ -25,9 +25,9 @@ import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
 import com.hotels.hcommon.hive.metastore.compatibility.HiveMetaStoreClientCompatibility;
 import com.hotels.hcommon.hive.metastore.compatibility.HiveMetaStoreClientCompatibility12x;
 
-class Hive12CompatibleClientFactory {
+class Hive12CompatibleMetaStoreClientFactory {
 
-  private static final Logger log = LoggerFactory.getLogger(Hive12CompatibleClientFactory.class);
+  private static final Logger log = LoggerFactory.getLogger(Hive12CompatibleMetaStoreClientFactory.class);
 
   CloseableMetaStoreClient newInstance(IMetaStoreClient delegate) {
     HiveMetaStoreClientCompatibility compatibility = null;
