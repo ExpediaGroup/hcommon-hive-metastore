@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.hotels.hcommon.hive.metastore.client.tunnelling;
 
 import static org.mockito.Matchers.any;
@@ -36,7 +37,7 @@ import com.jcraft.jsch.JSchException;
 
 import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
-import com.hotels.hcommon.hive.metastore.client.retrying.RetryingHiveMetaStoreClientFactory;
+import com.hotels.hcommon.hive.metastore.client.closeable.CloseableMetaStoreClientFactory;
 import com.hotels.hcommon.ssh.MethodChecker;
 import com.hotels.hcommon.ssh.TunnelableFactory;
 import com.hotels.hcommon.ssh.TunnelableSupplier;
@@ -48,9 +49,10 @@ public class TunnellingMetaStoreClientSupplierTest {
   private static final String LOCAL_HOST = "127.0.0.2";
   private static final int REMOTE_PORT = 9083;
   private static final String REMOTE_HOST = "emrmaster";
+  private static final String NAME = "name";
 
   private @Mock TunnelableFactory<CloseableMetaStoreClient> tunnelableFactory;
-  private @Mock RetryingHiveMetaStoreClientFactory metaStoreClientFactory;
+  private @Mock CloseableMetaStoreClientFactory metaStoreClientFactory;
   private @Mock CloseableMetaStoreClient metaStoreClient;
 
   private final HiveConf hiveConf = new HiveConf();
@@ -63,12 +65,13 @@ public class TunnellingMetaStoreClientSupplierTest {
 
   @Before
   public void injectMocks() throws Exception {
-    when(metaStoreClientFactory.newInstance()).thenReturn(metaStoreClient);
+    when(metaStoreClientFactory.newInstance(eq(hiveConf), eq(NAME))).thenReturn(metaStoreClient);
   }
 
   @Test
   public void newInstance() throws Exception {
-    supplier = new TunnellingMetaStoreClientSupplier(hiveConf, LOCAL_HOST, metaStoreClientFactory, tunnelableFactory);
+    supplier = new TunnellingMetaStoreClientSupplier(hiveConf, NAME, LOCAL_HOST, metaStoreClientFactory,
+        tunnelableFactory);
     supplier.get();
     verify(tunnelableFactory).wrap(any(TunnelableSupplier.class), any(MethodChecker.class), eq(LOCAL_HOST), anyInt(),
         eq(REMOTE_HOST), eq(REMOTE_PORT));
@@ -77,7 +80,8 @@ public class TunnellingMetaStoreClientSupplierTest {
   @Test(expected = RuntimeException.class)
   public void invalidURI() {
     hiveConf.setVar(HiveConf.ConfVars.METASTOREURIS, "#invalid://#host:port");
-    supplier = new TunnellingMetaStoreClientSupplier(hiveConf, LOCAL_HOST, metaStoreClientFactory, tunnelableFactory);
+    supplier = new TunnellingMetaStoreClientSupplier(hiveConf, NAME, LOCAL_HOST, metaStoreClientFactory,
+        tunnelableFactory);
   }
 
   @Test(expected = MetaStoreClientException.class)
@@ -85,7 +89,8 @@ public class TunnellingMetaStoreClientSupplierTest {
     when(tunnelableFactory.wrap(any(TunnelableSupplier.class), any(MethodChecker.class), eq(LOCAL_HOST), anyInt(),
         eq(REMOTE_HOST), eq(REMOTE_PORT))).thenThrow(MetaStoreClientException.class);
 
-    supplier = new TunnellingMetaStoreClientSupplier(hiveConf, LOCAL_HOST, metaStoreClientFactory, tunnelableFactory);
+    supplier = new TunnellingMetaStoreClientSupplier(hiveConf, NAME, LOCAL_HOST, metaStoreClientFactory,
+        tunnelableFactory);
     supplier.get();
   }
 
@@ -96,7 +101,8 @@ public class TunnellingMetaStoreClientSupplierTest {
     when(tunnelableFactory.wrap(any(TunnelableSupplier.class), any(MethodChecker.class), eq(LOCAL_HOST), anyInt(),
         eq(REMOTE_HOST), eq(REMOTE_PORT))).thenThrow(JSchException.class);
 
-    supplier = new TunnellingMetaStoreClientSupplier(hiveConf, LOCAL_HOST, metaStoreClientFactory, tunnelableFactory);
+    supplier = new TunnellingMetaStoreClientSupplier(hiveConf, NAME, LOCAL_HOST, metaStoreClientFactory,
+        tunnelableFactory);
     supplier.get();
   }
 

@@ -33,6 +33,7 @@ public class TunnellingMetaStoreClientSupplierBuilder {
   private int sshPort = DEFAULT_PORT;
   private int timeout = DEFAULT_SESSION_TIMEOUT;
   private boolean strictHostKeyChecking = DEFAULT_STRICT_HOST_KEY_CHECK;
+  private String name;
   private String sshRoute;
   private String privateKeys;
   private String knownHosts;
@@ -56,8 +57,13 @@ public class TunnellingMetaStoreClientSupplierBuilder {
 
   private TunnellingMetaStoreClientSupplier build(HiveConf hiveConf, MetaStoreClientFactory metaStoreClientFactory,
       TunnelableFactory<CloseableMetaStoreClient> tunnelableFactory) {
-    return new TunnellingMetaStoreClientSupplier(hiveConf, localHost, metaStoreClientFactory,
+    return new TunnellingMetaStoreClientSupplier(hiveConf, name, localHost, metaStoreClientFactory,
         tunnelableFactory);
+  }
+
+  public TunnellingMetaStoreClientSupplierBuilder withName(String name) {
+    this.name = name;
+    return this;
   }
 
   public TunnellingMetaStoreClientSupplierBuilder withRoute(String sshRoute) {

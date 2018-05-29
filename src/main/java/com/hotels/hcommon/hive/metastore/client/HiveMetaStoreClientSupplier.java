@@ -15,6 +15,8 @@
  */
 package com.hotels.hcommon.hive.metastore.client;
 
+import org.apache.hadoop.hive.conf.HiveConf;
+
 import com.google.common.base.Supplier;
 
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
@@ -23,14 +25,19 @@ import com.hotels.hcommon.ssh.TunnelableSupplier;
 
 public class HiveMetaStoreClientSupplier implements TunnelableSupplier<CloseableMetaStoreClient>,
     Supplier<CloseableMetaStoreClient> {
-  private final MetaStoreClientFactory metaStoreClientFactory;
 
-  public HiveMetaStoreClientSupplier(MetaStoreClientFactory metaStoreClientFactory) {
+  private final MetaStoreClientFactory metaStoreClientFactory;
+  private final HiveConf hiveConf;
+  private final String name;
+
+  public HiveMetaStoreClientSupplier(MetaStoreClientFactory metaStoreClientFactory, HiveConf hiveConf, String name) {
     this.metaStoreClientFactory = metaStoreClientFactory;
+    this.hiveConf = hiveConf;
+    this.name = name;
   }
 
   @Override
   public CloseableMetaStoreClient get() {
-    return metaStoreClientFactory.newInstance();
+    return metaStoreClientFactory.newInstance(hiveConf, name);
   }
 }

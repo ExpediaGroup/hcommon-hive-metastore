@@ -35,12 +35,6 @@
       <scope>provided</scope>
       <version>${hive.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.apache.hive.hcatalog</groupId>
-      <artifactId>hive-hcatalog-core</artifactId>
-      <version>${hive.version}</version>
-      <scope>provided</scope>
-    </dependency>
 
     <dependency>
       <groupId>com.hotels</groupId>

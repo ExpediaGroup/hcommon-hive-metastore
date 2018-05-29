@@ -16,72 +16,44 @@
 
 package com.hotels.hcommon.hive.metastore.client.closeable;
 
-import java.io.IOException;
-import java.lang.reflect.Proxy;
-
-import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hive.conf.HiveConf;
+import org.apache.hadoop.hive.conf.HiveConf.ConfVars;
+import org.apache.hadoop.hive.metastore.HiveMetaHook;
+import org.apache.hadoop.hive.metastore.HiveMetaHookLoader;
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
-import org.apache.hadoop.hive.metastore.IMetaStoreClient;
+import org.apache.hadoop.hive.metastore.RetryingMetaStoreClient;
 import org.apache.hadoop.hive.metastore.api.MetaException;
-import org.apache.hive.hcatalog.common.HCatUtil;
+import org.apache.hadoop.hive.metastore.api.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.annotations.VisibleForTesting;
 
 import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
 import com.hotels.hcommon.hive.metastore.client.api.MetaStoreClientFactory;
-import com.hotels.hcommon.hive.metastore.compatibility.HiveMetaStoreClientCompatibility;
-import com.hotels.hcommon.hive.metastore.compatibility.HiveMetaStoreClientCompatibility12x;
 
-public final class CloseableMetaStoreClientFactory implements MetaStoreClientFactory {
-
+public class CloseableMetaStoreClientFactory implements MetaStoreClientFactory {
   private static final Logger log = LoggerFactory.getLogger(CloseableMetaStoreClientFactory.class);
 
-  private final IMetaStoreClient delegate;
+  private final Hive12CompatibleClientFactory hive12CompatibleClientFactory;
 
-  private HiveMetaStoreClientCompatibility compatibility;
-
-  public CloseableMetaStoreClientFactory(Configuration conf) {
-    this(clientForConf(conf));
-  }
-
-  public CloseableMetaStoreClientFactory(IMetaStoreClient delegate) {
-    this.delegate = delegate;
-  }
-
-  @VisibleForTesting
-  CloseableMetaStoreClientFactory(IMetaStoreClient delegate, HiveMetaStoreClientCompatibility compatibility) {
-    this.delegate = delegate;
-    this.compatibility = compatibility;
-  }
-
-  private static HiveMetaStoreClient clientForConf(Configuration conf) {
-    try {
-      return new HiveMetaStoreClient(HCatUtil.getHiveConf(conf));
-    } catch (MetaException | IOException e) {
-      throw new MetaStoreClientException(e.getMessage());
-    }
-  }
-
-  private void tryLoadCompatibility() {
-    if (compatibility == null) {
-      try {
-        compatibility = new HiveMetaStoreClientCompatibility12x(delegate);
-      } catch (Throwable t) {
-        log.warn("Unable to initialize compatibility", t);
-      }
-    }
+  public CloseableMetaStoreClientFactory() {
+    this.hive12CompatibleClientFactory = new Hive12CompatibleClientFactory();
   }
 
   @Override
-  public CloseableMetaStoreClient newInstance() {
-    tryLoadCompatibility();
-    ClassLoader classLoader = CloseableMetaStoreClient.class.getClassLoader();
-    Class<?>[] interfaces = new Class<?>[] { CloseableMetaStoreClient.class };
-    CloseableMetaStoreClientInvocationHandler handler = new CloseableMetaStoreClientInvocationHandler(delegate,
-        compatibility);
-    return (CloseableMetaStoreClient) Proxy.newProxyInstance(classLoader, interfaces, handler);
+  public CloseableMetaStoreClient newInstance(HiveConf hiveConf, String name) {
+    log.info("Connecting to '{}' metastore at '{}'", name, hiveConf.getVar(ConfVars.METASTOREURIS));
+    try {
+      return hive12CompatibleClientFactory.newInstance(RetryingMetaStoreClient.getProxy(hiveConf, new HiveMetaHookLoader() {
+        @Override
+        public HiveMetaHook getHook(Table tbl) throws MetaException {
+          return null;
+        }
+      }, HiveMetaStoreClient.class.getName()));
+    } catch (MetaException | RuntimeException e) {
+      String message = String.format("Unable to connect to '%s' metastore at '%s'", name,
+          hiveConf.getVar(ConfVars.METASTOREURIS));
+      throw new MetaStoreClientException(message, e);
+    }
   }
 }

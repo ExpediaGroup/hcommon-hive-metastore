@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.hotels.hcommon.hive.metastore.client.closeable;
 
 import java.lang.reflect.InvocationHandler;
@@ -46,7 +47,9 @@ class CloseableMetaStoreClientInvocationHandler implements InvocationHandler {
       return method.invoke(delegate, args);
     } catch (InvocationTargetException e) {
       try {
+        log.info("Couldn't invoke method {}", method.toGenericString());
         if (compatibility != null && e.getCause().getClass().isAssignableFrom(TApplicationException.class)) {
+          log.info("Attempting to invoke with {}", compatibility.getClass().getName());
           return invokeCompatibility(method, args);
         }
       } catch (Throwable t) {

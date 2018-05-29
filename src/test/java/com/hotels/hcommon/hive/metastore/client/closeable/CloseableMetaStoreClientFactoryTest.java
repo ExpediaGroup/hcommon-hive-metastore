@@ -13,45 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.hotels.hcommon.hive.metastore.client.closeable;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertNotNull;
 
-import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
-import org.apache.thrift.TApplicationException;
-import org.apache.thrift.TException;
+import org.apache.hadoop.hive.conf.HiveConf;
+import org.apache.hadoop.hive.conf.HiveConf.ConfVars;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
+import com.hotels.beeju.ThriftHiveMetaStoreJUnitRule;
+import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
-import com.hotels.hcommon.hive.metastore.compatibility.HiveMetaStoreClientCompatibility;
 
-@RunWith(MockitoJUnitRunner.class)
 public class CloseableMetaStoreClientFactoryTest {
 
-  private @Mock HiveMetaStoreClient delegate;
-  private @Mock HiveMetaStoreClientCompatibility compatibility;
+  public @Rule ThriftHiveMetaStoreJUnitRule hive = new ThriftHiveMetaStoreJUnitRule();
+  private CloseableMetaStoreClientFactory factory = new CloseableMetaStoreClientFactory();
 
   @Test
-  public void typical() throws TException {
-    try (CloseableMetaStoreClient wrapped = new CloseableMetaStoreClientFactory(delegate).newInstance()) {
-      wrapped.unlock(1L);
-    }
-    verify(delegate).unlock(1L);
-    verify(delegate).close();
+  public void newInstance() throws Exception {
+    CloseableMetaStoreClient client = factory.newInstance(hive.conf(), "name");
+    assertNotNull(client.getDatabase(hive.databaseName()));
   }
 
-  @Test
-  public void compatibility() throws TException {
-    when(delegate.getTable("db", "tbl")).thenThrow(new TApplicationException());
-    try (CloseableMetaStoreClient wrapped = new CloseableMetaStoreClientFactory(delegate,
-        compatibility).newInstance()) {
-      wrapped.getTable("db", "tbl");
-    }
-    verify(compatibility).getTable("db", "tbl");
+  @Test(expected = MetaStoreClientException.class)
+  public void newInstanceCannotConnectThrowsMetaStoreClientException() throws Exception {
+    HiveConf conf = new HiveConf();
+    conf.setVar(ConfVars.METASTOREURIS, "thrift://ghost:1234");
+    factory.newInstance(conf, "name");
   }
-
 }
