@@ -16,6 +16,8 @@
 
 package com.hotels.hcommon.hive.metastore.client.tunnelling;
 
+import javax.validation.constraints.NotNull;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URI;
@@ -23,8 +25,6 @@ import java.net.URISyntaxException;
 
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.conf.HiveConf.ConfVars;
-
-import edu.umd.cs.findbugs.annotations.NonNull;
 
 import com.google.common.base.Supplier;
 
@@ -47,11 +47,11 @@ public class TunnellingMetaStoreClientSupplier implements Supplier<CloseableMeta
   private final MetaStoreClientFactory metaStoreClientFactory;
 
   TunnellingMetaStoreClientSupplier(
-      @NonNull HiveConf hiveConf,
-      @NonNull String name,
-      @NonNull String localHost,
-      @NonNull MetaStoreClientFactory metaStoreClientFactory,
-      @NonNull TunnelableFactory<CloseableMetaStoreClient> tunnelableFactory) {
+      @NotNull HiveConf hiveConf,
+      @NotNull String name,
+      @NotNull String localHost,
+      @NotNull MetaStoreClientFactory metaStoreClientFactory,
+      @NotNull TunnelableFactory<CloseableMetaStoreClient> tunnelableFactory) {
     this.hiveConf = hiveConf;
     this.name = name;
     this.tunnelableFactory = tunnelableFactory;
