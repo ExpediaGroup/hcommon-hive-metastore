@@ -28,8 +28,8 @@ import org.apache.hadoop.hive.conf.HiveConf.ConfVars;
 
 import com.google.common.base.Supplier;
 
-import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
-import com.hotels.hcommon.hive.metastore.client.HiveMetaStoreClientSupplier;
+import com.hotels.hcommon.hive.metastore.exception.MetaStoreClientException;
+import com.hotels.hcommon.hive.metastore.client.supplier.HiveMetaStoreClientSupplier;
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
 import com.hotels.hcommon.hive.metastore.client.api.MetaStoreClientFactory;
 import com.hotels.hcommon.ssh.MethodChecker;

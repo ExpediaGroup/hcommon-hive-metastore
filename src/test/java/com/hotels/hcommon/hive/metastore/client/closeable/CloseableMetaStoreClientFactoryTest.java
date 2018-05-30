@@ -24,7 +24,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.hotels.beeju.ThriftHiveMetaStoreJUnitRule;
-import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
+import com.hotels.hcommon.hive.metastore.exception.MetaStoreClientException;
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
 
 public class CloseableMetaStoreClientFactoryTest {

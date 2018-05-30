@@ -13,21 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hotels.hcommon.hive.metastore;
+package com.hotels.hcommon.hive.metastore.exception;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
-import org.junit.Test;
+public class MetaStoreClientException extends RuntimeException {
+  private static final long serialVersionUID = 1L;
 
-public class MetaStoreUnavailableExceptionTest {
-  @Test
-  public void typical() {
-    String message = "message";
-    Throwable cause = new RuntimeException();
-    MetaStoreUnavailableException exception = new MetaStoreUnavailableException(message, cause);
-
-    assertThat(exception.getMessage(), is(message));
-    assertThat(exception.getCause(), is(cause));
+  public MetaStoreClientException(String message) {
+    super(message);
   }
+
+  public MetaStoreClientException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
 }

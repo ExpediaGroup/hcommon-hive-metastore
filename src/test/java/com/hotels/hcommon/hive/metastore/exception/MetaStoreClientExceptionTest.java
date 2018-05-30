@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hotels.hcommon.hive.metastore;
+package com.hotels.hcommon.hive.metastore.exception;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
+
+import com.hotels.hcommon.hive.metastore.exception.MetaStoreClientException;
 
 public class MetaStoreClientExceptionTest {
 

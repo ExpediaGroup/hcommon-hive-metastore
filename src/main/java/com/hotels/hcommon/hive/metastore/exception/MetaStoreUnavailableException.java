@@ -13,14 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hotels.hcommon.hive.metastore.client.closeable;
-
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
-
-@RunWith(MockitoJUnitRunner.class)
-public class CompatibilityMetaStoreClientFactoryTest {
+package com.hotels.hcommon.hive.metastore.exception;
 
 
+public class MetaStoreUnavailableException extends RuntimeException {
+  private static final long serialVersionUID = 1L;
+
+  public MetaStoreUnavailableException(String message) {
+    super(message);
+  }
+
+  public MetaStoreUnavailableException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
 }

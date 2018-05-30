@@ -22,11 +22,14 @@ import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 import org.apache.thrift.TApplicationException;
 import org.apache.thrift.TException;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
 import com.hotels.hcommon.hive.metastore.compatibility.HiveMetaStoreClientCompatibility;
 
+@RunWith(MockitoJUnitRunner.class)
 public class Hive12CompatibleMetaStoreClientFactoryTest {
 
   private @Mock HiveMetaStoreClient delegate;

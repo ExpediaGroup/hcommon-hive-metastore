@@ -35,7 +35,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.jcraft.jsch.JSchException;
 
-import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
+import com.hotels.hcommon.hive.metastore.exception.MetaStoreClientException;
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
 import com.hotels.hcommon.hive.metastore.client.closeable.CloseableMetaStoreClientFactory;
 import com.hotels.hcommon.ssh.MethodChecker;

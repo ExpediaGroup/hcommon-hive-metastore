@@ -39,7 +39,6 @@ public class CloseableMetaStoreClientInvocationHandlerTest {
   private @Mock IMetaStoreClient client;
   private @Mock HiveMetaStoreClientCompatibility compatibility;
 
-
   @Test
   public void typical() throws Throwable {
     invocationHandler = new CloseableMetaStoreClientInvocationHandler(client, compatibility);
