@@ -20,8 +20,6 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
-import com.hotels.hcommon.hive.metastore.MetaStoreClientException;
-
 public class MetaStoreClientExceptionTest {
 
   @Test

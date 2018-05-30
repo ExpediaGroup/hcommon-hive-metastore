@@ -16,8 +16,6 @@
 
 package com.hotels.hcommon.hive.metastore.client.tunnelling;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URI;
@@ -25,6 +23,8 @@ import java.net.URISyntaxException;
 
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.conf.HiveConf.ConfVars;
+
+import edu.umd.cs.findbugs.annotations.NonNull;
 
 import com.google.common.base.Supplier;
 
