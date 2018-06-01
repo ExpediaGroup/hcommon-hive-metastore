@@ -17,11 +17,10 @@ package com.hotels.hcommon.hive.metastore.client.api;
 
 import java.io.Closeable;
 
-import org.apache.hadoop.hive.metastore.IHMSHandler;
 import org.apache.hadoop.hive.metastore.IMetaStoreClient;
 
 import com.hotels.hcommon.ssh.Tunnelable;
 
-public interface CloseableMetaStoreClient extends IMetaStoreClient, IHMSHandler, Closeable, Tunnelable {
+public interface CloseableMetaStoreClient extends IMetaStoreClient, Closeable, Tunnelable {
   public boolean isOpen();
 }
