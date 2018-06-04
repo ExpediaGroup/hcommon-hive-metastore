@@ -14,6 +14,13 @@
   <version>1.0.0-SNAPSHOT</version>
   <inceptionYear>2018</inceptionYear>
 
+  <scm>
+    <connection>scm:git:git@github.com:HotelsDotCom/hcommon-hive-metastore.git</connection>
+    <developerConnection>scm:git:git@github.com:HotelsDotCom/hcommon-hive-metastore.git</developerConnection>
+    <url>https://github.com/HotelsDotCom/hcommon-hive-metastore</url>
+    <tag>HEAD</tag>
+  </scm>
+
   <properties>
     <hive.version>2.3.2</hive.version>
     <mockito.version>1.10.19</mockito.version>
