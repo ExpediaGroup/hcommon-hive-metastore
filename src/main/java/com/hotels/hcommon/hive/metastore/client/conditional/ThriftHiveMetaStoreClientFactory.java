@@ -28,8 +28,8 @@ public class ThriftHiveMetaStoreClientFactory implements ConditionalMetaStoreCli
   public static final String ACCEPT_PREFIX = "thrift:";
 
   @Override
-  public boolean accepts(String url) {
-    return Strings.nullToEmpty(url).startsWith(ACCEPT_PREFIX);
+  public boolean accepts(String uri) {
+    return Strings.nullToEmpty(uri).startsWith(ACCEPT_PREFIX);
   }
 
   @Override

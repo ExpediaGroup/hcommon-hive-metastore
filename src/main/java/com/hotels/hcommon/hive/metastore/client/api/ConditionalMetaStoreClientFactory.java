@@ -16,5 +16,5 @@
 package com.hotels.hcommon.hive.metastore.client.api;
 
 public interface ConditionalMetaStoreClientFactory extends MetaStoreClientFactory {
-  public boolean accepts(String url);
+  boolean accepts(String uri);
 }

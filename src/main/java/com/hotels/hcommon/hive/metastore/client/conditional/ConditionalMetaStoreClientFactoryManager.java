@@ -27,12 +27,12 @@ public class ConditionalMetaStoreClientFactoryManager {
     this.metaStoreClientFactories = metaStoreClientFactories;
   }
 
-  public MetaStoreClientFactory factoryForUrl(String url) {
+  public MetaStoreClientFactory factoryForUri(String uri) {
     for (ConditionalMetaStoreClientFactory metaStoreClientFactory : metaStoreClientFactories) {
-      if (metaStoreClientFactory.accepts(url)) {
+      if (metaStoreClientFactory.accepts(uri)) {
         return metaStoreClientFactory;
       }
     }
-    throw new RuntimeException("No MetaStoreClientFactory found for url " + url);
+    throw new IllegalArgumentException("No MetaStoreClientFactory found for uri " + uri);
   }
 }
