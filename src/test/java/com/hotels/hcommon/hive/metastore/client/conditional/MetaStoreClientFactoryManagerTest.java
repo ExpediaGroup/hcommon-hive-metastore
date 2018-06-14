@@ -30,15 +30,13 @@ public class MetaStoreClientFactoryManagerTest {
   @Test
   public void factoryForThrift() {
     List<ConditionalMetaStoreClientFactory> list = Collections
-        .<ConditionalMetaStoreClientFactory> singletonList(
-            new ThriftHiveMetaStoreClientFactory());
+        .<ConditionalMetaStoreClientFactory> singletonList(new ThriftHiveMetaStoreClientFactory());
     ConditionalMetaStoreClientFactoryManager factoryManager = new ConditionalMetaStoreClientFactoryManager(list);
-    MetaStoreClientFactory clientFactory = factoryManager.factoryForUri(
-        ThriftHiveMetaStoreClientFactory.ACCEPT_PREFIX);
+    MetaStoreClientFactory clientFactory = factoryManager.factoryForUri(ThriftHiveMetaStoreClientFactory.ACCEPT_PREFIX);
     assertTrue(clientFactory instanceof ThriftHiveMetaStoreClientFactory);
   }
 
-  @Test(expected = RuntimeException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void factoryForUnsupportedUrl() {
     List<ConditionalMetaStoreClientFactory> list = Collections.emptyList();
     ConditionalMetaStoreClientFactoryManager factoryManager = new ConditionalMetaStoreClientFactoryManager(list);
