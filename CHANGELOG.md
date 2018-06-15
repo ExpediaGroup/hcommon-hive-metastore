@@ -1,4 +1,4 @@
-# TBD
+# [1.1.0] 2018-06-15
 ### Added
 * ConditionalMetaStoreClientFactory implementations.
 
