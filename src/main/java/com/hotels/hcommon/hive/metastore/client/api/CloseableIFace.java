@@ -15,6 +15,16 @@
  */
 package com.hotels.hcommon.hive.metastore.client.api;
 
-public interface ConditionalIHMSHandler extends CloseableIHMSHandler {
-  boolean accepts(String uri);
+import java.io.Closeable;
+
+import org.apache.hadoop.hive.metastore.api.ThriftHiveMetastore;
+
+import com.hotels.hcommon.ssh.Tunnelable;
+
+public interface CloseableIFace extends ThriftHiveMetastore.Iface, Closeable, Tunnelable {
+  public void open();
+
+  boolean isOpen();
+
+
 }
