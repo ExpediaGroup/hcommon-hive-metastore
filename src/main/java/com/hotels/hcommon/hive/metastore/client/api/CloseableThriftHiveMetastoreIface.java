@@ -21,7 +21,7 @@ import org.apache.hadoop.hive.metastore.api.ThriftHiveMetastore;
 
 import com.hotels.hcommon.ssh.Tunnelable;
 
-public interface CloseableIFace extends ThriftHiveMetastore.Iface, Closeable, Tunnelable {
+public interface CloseableThriftHiveMetastoreIface extends ThriftHiveMetastore.Iface, Closeable, Tunnelable {
   public void open();
 
   boolean isOpen();
