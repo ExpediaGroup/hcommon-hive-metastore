@@ -15,6 +15,8 @@
  */
 package com.hotels.hcommon.hive.metastore.client.tunnelling;
 
+import static javax.validation.constraints.Pattern.Flag.CASE_INSENSITIVE;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
@@ -35,7 +37,8 @@ public class MetastoreTunnel {
   private @NotBlank String privateKeys;
   private @NotBlank String knownHosts;
   private @Min(0) int timeout = DEFAULT_TIMEOUT_MILLIS;
-  @Pattern(regexp = "^(?i:yes\\b|no\\b)", message = "StrictHostKeyChecking can be set to 'yes' or 'no'")
+  @Pattern(regexp = "yes|no", flags = {
+      CASE_INSENSITIVE }, message = "StrictHostKeyChecking can be set to 'yes' or 'no'")
   private String strictHostKeyChecking = "yes";
 
   public String getRoute() {
