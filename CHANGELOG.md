@@ -1,4 +1,4 @@
-# [TBD] - TBD
+# [1.2.0] - 2018-09-21
 ### Added
 * MetastoreTunnel as a common class.
 
