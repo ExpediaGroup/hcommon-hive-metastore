@@ -20,7 +20,6 @@
   </scm>
 
   <properties>
-    <shade.prefix>${project.groupId}.shaded</shade.prefix>
     <beeju.version>1.2.1</beeju.version>
     <hamcrest-library.version>1.3</hamcrest-library.version>
     <hcommon-ssh.version>1.0.1</hcommon-ssh.version>
