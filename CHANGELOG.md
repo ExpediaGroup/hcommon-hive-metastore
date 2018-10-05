@@ -1,3 +1,7 @@
+# [TBD] - TBD
+### Changed
+* Upgraded hotels-oss-parent to 2.3.3 (was 2.1.0).
+
 # [1.2.0] - 2018-09-21
 ### Added
 * MetastoreTunnel as a common class.
