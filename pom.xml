@@ -9,14 +9,14 @@
   </parent>
 
   <artifactId>hcommon-hive-metastore</artifactId>
-  <version>1.2.1</version>
+  <version>1.2.2-SNAPSHOT</version>
   <inceptionYear>2018</inceptionYear>
 
   <scm>
     <connection>scm:git:git@github.com:HotelsDotCom/hcommon-hive-metastore.git</connection>
     <developerConnection>scm:git:git@github.com:HotelsDotCom/hcommon-hive-metastore.git</developerConnection>
     <url>https://github.com/HotelsDotCom/hcommon-hive-metastore</url>
-    <tag>hcommon-hive-metastore-1.2.1</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <properties>
