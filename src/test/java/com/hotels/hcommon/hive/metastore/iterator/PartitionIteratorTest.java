@@ -157,7 +157,7 @@ public class PartitionIteratorTest {
   }
 
   @Test
-  public void reversOrderWithbatching() throws MetaException, TException {
+  public void reverseOrderWithBatching() throws MetaException, TException {
     when(metastore
         .getPartitionsByNames(DATABASE_NAME, TABLE_NAME,
             Arrays.asList("year=2016/month=08/day=04", "year=2014/month=05/day=13", "year=2014/month=03/day=24")))
