@@ -1,4 +1,7 @@
-# [TBD] - TBD
+# TBD
+## Added
+* MetastoreUnavailableException and MetaStoreUriNormaliser implementations.
+
 ### Changed
 * Upgraded hotels-oss-parent to 2.3.3 (was 2.1.0).
 ### Added
