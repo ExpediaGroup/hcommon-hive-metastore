@@ -2,7 +2,7 @@
 ### Changed
 * Upgraded hotels-oss-parent to 2.3.3 (was 2.1.0).
 ### Added
-* Made PartitionIterator optionally run in reverse order.
+* PartitionIterator can optionally traverse in reverse order.
 
 # [1.2.0] - 2018-09-21
 ### Added
