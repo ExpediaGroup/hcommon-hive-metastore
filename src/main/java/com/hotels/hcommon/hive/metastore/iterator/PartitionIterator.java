@@ -31,15 +31,23 @@ import org.slf4j.LoggerFactory;
 /** Iterates over partitions, lazily loading in batches where possible. */
 public class PartitionIterator implements Iterator<Partition> {
 
+  public enum Ordering {
+    NATURAL,
+    REVERSE
+  }
+
   private static final Logger LOG = LoggerFactory.getLogger(PartitionIterator.class);
 
   private static final short NO_LIMIT = (short) -1;
 
-  private static List<String> loadPartitionNames(IMetaStoreClient metastore, Table table)
+  private static List<String> loadPartitionNames(IMetaStoreClient metastore, Table table, Ordering ordering)
     throws MetaException, TException {
     // partition names: (key=value/)*(key=value)
     LOG.debug("Fetching all partition names.");
     List<String> names = metastore.listPartitionNames(table.getDbName(), table.getTableName(), NO_LIMIT);
+    if (ordering == Ordering.REVERSE) {
+      Collections.reverse(names);
+    }
     LOG.debug("Fetched {} partition names for table {}.", names.size(), Warehouse.getQualifiedName(table));
     return names;
   }
@@ -47,21 +55,37 @@ public class PartitionIterator implements Iterator<Partition> {
   private final Iterator<List<String>> partitionNames;
   private final IMetaStoreClient metastore;
   private final Table table;
+  private final Ordering ordering;
   private int count;
 
   private Iterator<Partition> batch;
 
   public PartitionIterator(IMetaStoreClient metastore, Table table, short batchSize) throws MetaException, TException {
-    this(metastore, table, new BatchResolver(loadPartitionNames(metastore, table), batchSize));
+    this(metastore, table, batchSize, Ordering.NATURAL);
+  }
+
+  public PartitionIterator(IMetaStoreClient metastore, Table table, short batchSize, Ordering ordering)
+      throws MetaException, TException {
+    this(metastore, table, new BatchResolver(loadPartitionNames(metastore, table, ordering), batchSize), ordering);
   }
 
   public PartitionIterator(IMetaStoreClient metastore, Table table, short batchSize, List<String> partitionNames)
       throws MetaException, TException {
-    this(metastore, table, new BatchResolver(partitionNames, batchSize));
+    this(metastore, table, new BatchResolver(partitionNames, batchSize), Ordering.NATURAL);
   }
 
-  PartitionIterator(IMetaStoreClient metastore, Table table, BatchResolver batchResolver)
+  public PartitionIterator(
+      IMetaStoreClient metastore,
+      Table table,
+      short batchSize,
+      List<String> partitionNames,
+      Ordering ordering) throws MetaException, TException {
+    this(metastore, table, new BatchResolver(partitionNames, batchSize), ordering);
+  }
+
+  PartitionIterator(IMetaStoreClient metastore, Table table, BatchResolver batchResolver, Ordering ordering)
       throws MetaException, TException {
+    this.ordering = ordering;
     partitionNames = batchResolver.resolve().iterator();
     batch = Collections.<Partition> emptyList().iterator();
     this.table = table;
@@ -77,6 +101,9 @@ public class PartitionIterator implements Iterator<Partition> {
       List<String> names = partitionNames.next();
       try {
         List<Partition> partitions = metastore.getPartitionsByNames(table.getDbName(), table.getTableName(), names);
+        if (ordering == Ordering.REVERSE) {
+          Collections.reverse(partitions);
+        }
         count += partitions.size();
         LOG.debug("Retrieved {} partitions, total: {}.", partitions.size(), count);
         batch = partitions.iterator();
