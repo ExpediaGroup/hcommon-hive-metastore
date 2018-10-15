@@ -1,11 +1,9 @@
 # TBD
-## Added
-* MetastoreUnavailableException and MetaStoreUriNormaliser implementations.
-
 ### Changed
 * Upgraded hotels-oss-parent to 2.3.3 (was 2.1.0).
 ### Added
 * PartitionIterator can optionally traverse in reverse order.
+* MetastoreUnavailableException and MetaStoreUriNormaliser implementations.
 
 # [1.2.0] - 2018-09-21
 ### Added
