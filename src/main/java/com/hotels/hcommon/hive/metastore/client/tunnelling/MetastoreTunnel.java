@@ -98,6 +98,6 @@ public class MetastoreTunnel {
   }
 
   public boolean isStrictHostKeyChecking() {
-    return strictHostKeyChecking.toLowerCase().equals("yes");
+    return "yes".equalsIgnoreCase(strictHostKeyChecking);
   }
 }
