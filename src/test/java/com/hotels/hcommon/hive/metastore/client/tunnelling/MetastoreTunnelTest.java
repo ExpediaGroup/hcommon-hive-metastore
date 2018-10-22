@@ -198,4 +198,16 @@ public class MetastoreTunnelTest {
     assertThat(violations.size(), is(0));
     assertThat(tunnel.getLocalhost(), is(localHost));
   }
+
+  @Test
+  public void isStrictHostKeyCheckingForYes() {
+    tunnel.setStrictHostKeyChecking("yes");
+    assertThat(tunnel.isStrictHostKeyChecking(), is(true));
+  }
+
+  @Test
+  public void isStrictHostKeyCheckingForNo() {
+    tunnel.setStrictHostKeyChecking("no");
+    assertThat(tunnel.isStrictHostKeyChecking(), is(false));
+  }
 }

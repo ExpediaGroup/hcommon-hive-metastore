@@ -1,6 +1,11 @@
+# TBD
+### Added
+* Boolean function to indicate whether strict host key checking is set for MetastoreTunnel.
+
 # [1.2.1] - 2018-10-15
 ### Changed
 * Upgraded hotels-oss-parent to 2.3.3 (was 2.1.0).
+
 ### Added
 * PartitionIterator can optionally traverse in reverse order.
 * MetastoreUnavailableException and MetaStoreUriNormaliser implementations.
