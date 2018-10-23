@@ -1,4 +1,4 @@
-# TBD
+# [1.2.2] - 2018-10-23
 ### Added
 * Boolean function to indicate whether strict host key checking is set for MetastoreTunnel.
 
