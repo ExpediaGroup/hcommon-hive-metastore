@@ -1,6 +1,10 @@
+# [1.2.3] - 2018-10-29
+### Fixed
+* Renamed function that indicates if strict host key checking is enabled to avoid causing a Spring Bean creation error.
+
 # [1.2.2] - 2018-10-23
 ### Added
-* Boolean function to indicate whether strict host key checking is set for MetastoreTunnel.
+* Boolean function to indicate whether strict host key checking is enabled for MetastoreTunnel.
 
 # [1.2.1] - 2018-10-15
 ### Changed
