@@ -97,7 +97,7 @@ public class MetastoreTunnel {
     this.strictHostKeyChecking = strictHostKeyChecking;
   }
 
-  public boolean isStrictHostKeyChecking() {
+  public boolean getIsStrictHostKeyChecking() {
     return "yes".equalsIgnoreCase(strictHostKeyChecking);
   }
 }
