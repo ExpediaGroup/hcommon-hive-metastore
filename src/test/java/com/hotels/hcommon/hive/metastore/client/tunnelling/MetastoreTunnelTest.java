@@ -202,12 +202,12 @@ public class MetastoreTunnelTest {
   @Test
   public void isStrictHostKeyCheckingForYes() {
     tunnel.setStrictHostKeyChecking("yes");
-    assertThat(tunnel.getIsStrictHostKeyChecking(), is(true));
+    assertThat(tunnel.isStrictHostKeyCheckingEnabled(), is(true));
   }
 
   @Test
   public void isStrictHostKeyCheckingForNo() {
     tunnel.setStrictHostKeyChecking("no");
-    assertThat(tunnel.getIsStrictHostKeyChecking(), is(false));
+    assertThat(tunnel.isStrictHostKeyCheckingEnabled(), is(false));
   }
 }
