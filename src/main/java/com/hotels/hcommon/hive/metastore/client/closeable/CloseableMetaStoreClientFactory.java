@@ -27,9 +27,9 @@ import org.apache.hadoop.hive.metastore.api.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.hotels.hcommon.hive.metastore.exception.MetaStoreClientException;
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
 import com.hotels.hcommon.hive.metastore.client.api.MetaStoreClientFactory;
+import com.hotels.hcommon.hive.metastore.exception.MetaStoreClientException;
 
 public class CloseableMetaStoreClientFactory implements MetaStoreClientFactory {
   private static final Logger log = LoggerFactory.getLogger(CloseableMetaStoreClientFactory.class);
@@ -37,22 +37,23 @@ public class CloseableMetaStoreClientFactory implements MetaStoreClientFactory {
   private final Hive12CompatibleMetaStoreClientFactory hive12CompatibleClientFactory;
 
   public CloseableMetaStoreClientFactory() {
-    this.hive12CompatibleClientFactory = new Hive12CompatibleMetaStoreClientFactory();
+    hive12CompatibleClientFactory = new Hive12CompatibleMetaStoreClientFactory();
   }
 
   @Override
   public CloseableMetaStoreClient newInstance(HiveConf hiveConf, String name) {
     log.info("Connecting to '{}' metastore at '{}'", name, hiveConf.getVar(ConfVars.METASTOREURIS));
     try {
-      return hive12CompatibleClientFactory.newInstance(RetryingMetaStoreClient.getProxy(hiveConf, new HiveMetaHookLoader() {
-        @Override
-        public HiveMetaHook getHook(Table tbl) throws MetaException {
-          return null;
-        }
-      }, HiveMetaStoreClient.class.getName()));
+      return hive12CompatibleClientFactory
+          .newInstance(RetryingMetaStoreClient.getProxy(hiveConf, new HiveMetaHookLoader() {
+            @Override
+            public HiveMetaHook getHook(Table tbl) throws MetaException {
+              return null;
+            }
+          }, HiveMetaStoreClient.class.getName()));
     } catch (MetaException | RuntimeException e) {
-      String message = String.format("Unable to connect to '%s' metastore at '%s'", name,
-          hiveConf.getVar(ConfVars.METASTOREURIS));
+      String message = String
+          .format("Unable to connect to '%s' metastore at '%s'", name, hiveConf.getVar(ConfVars.METASTOREURIS));
       throw new MetaStoreClientException(message, e);
     }
   }
