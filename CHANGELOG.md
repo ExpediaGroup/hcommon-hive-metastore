@@ -1,3 +1,8 @@
+# TBD
+### Changed
+* Upgraded Hive version to 2.3.4 (was 2.3.2).
+* Removed transitive (provided) dependency on `hbase-client`.
+
 # [1.2.3] - 2018-10-29
 ### Fixed
 * Renamed function that indicates if strict host key checking is enabled to avoid causing a Spring Bean creation error.
