@@ -1,3 +1,8 @@
+# [TBD]
+### Changed
+* Refactored project to remove checkstyle and findbugs warnings, which does not impact functionality.
+* Upgraded `hotels-oss-parent` to 2.3.5 (was 2.3.3).
+
 # [1.2.3] - 2018-10-29
 ### Fixed
 * Renamed function that indicates if strict host key checking is enabled to avoid causing a Spring Bean creation error.
