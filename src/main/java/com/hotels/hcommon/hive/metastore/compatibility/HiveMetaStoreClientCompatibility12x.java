@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018 Expedia Inc.
+ * Copyright (C) 2018-2019 Expedia Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ public class HiveMetaStoreClientCompatibility12x implements HiveMetaStoreClientC
         field.setAccessible(false);
       }
       return result;
-    } catch (Exception e) {
+    } catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
       throw new RuntimeException("Unable to hack client", e);
     }
   }
