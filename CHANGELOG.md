@@ -2,6 +2,8 @@
 ### Changed
 * Upgraded Hive version to 2.3.4 (was 2.3.2).
 * Removed transitive (provided) dependency on `hbase-client`.
+### Fixed
+* Removed 'isOpen()' method from CloseableMetaStoreClient. See[#11](https://github.com/HotelsDotCom/hcommon-hive-metastore/issues/11).
 
 # [1.2.3] - 2018-10-29
 ### Fixed

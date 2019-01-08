@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018 Expedia Inc.
+ * Copyright (C) 2018-2019 Expedia Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,4 @@ import org.apache.hadoop.hive.metastore.IMetaStoreClient;
 
 import com.hotels.hcommon.ssh.Tunnelable;
 
-public interface CloseableMetaStoreClient extends IMetaStoreClient, Closeable, Tunnelable {
-  public boolean isOpen();
-}
+public interface CloseableMetaStoreClient extends IMetaStoreClient, Closeable, Tunnelable {}
