@@ -87,7 +87,7 @@ public class PartitionIterator implements Iterator<Partition> {
       throws MetaException, TException {
     this.ordering = ordering;
     partitionNames = batchResolver.resolve().iterator();
-    batch = Collections.<Partition> emptyList().iterator();
+    batch = Collections.<Partition>emptyList().iterator();
     this.table = table;
     this.metastore = metastore;
   }
