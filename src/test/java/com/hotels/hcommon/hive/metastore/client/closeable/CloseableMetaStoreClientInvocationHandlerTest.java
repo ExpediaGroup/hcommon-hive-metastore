@@ -73,7 +73,7 @@ public class CloseableMetaStoreClientInvocationHandlerTest {
   }
 
   @Test(expected = NoSuchObjectException.class)
-  public void dontInvokeCompatibilityWhenExceptionOtherThanTApplicationExceptionIsThrown() throws Throwable {
+  public void delegateThrowsTException() throws Throwable {
     Class<?> clazz = Class.forName(IMetaStoreClient.class.getName());
     Method method = clazz.getMethod("getTable", String.class, String.class);
     String dbName = "db";
@@ -91,7 +91,7 @@ public class CloseableMetaStoreClientInvocationHandlerTest {
   }
 
   @Test(expected = NoSuchObjectException.class)
-  public void rethrowCompatibilityClassException() throws Throwable {
+  public void compatabilityThrowsTException() throws Throwable {
     Class<?> clazz = Class.forName(IMetaStoreClient.class.getName());
     Method method = clazz.getMethod("getTable", String.class, String.class);
     String dbName = "db";
@@ -111,7 +111,7 @@ public class CloseableMetaStoreClientInvocationHandlerTest {
   }
 
   @Test
-  public void rethrowClientClassExceptionOnTApplicationException() throws Throwable {
+  public void delegateAndCompatabilityThrowTApplicationException() throws Throwable {
     Class<?> clazz = Class.forName(IMetaStoreClient.class.getName());
     Method method = clazz.getMethod("getTable", String.class, String.class);
     String dbName = "db";
@@ -139,7 +139,7 @@ public class CloseableMetaStoreClientInvocationHandlerTest {
   @Test
   public void invocationExceptionOnCompatibilityLayerIsIgnoredOriginalExceptionShouldBeThrown() throws Throwable {
     Class<?> clazz = Class.forName(IMetaStoreClient.class.getName());
-    // This method does not exist in compatibility class, will result in NoSuchMethodException from the compatiblity
+    // This method exists in the delegate but not in the compatibility class, will result in NoSuchMethodException from the compatibility
     // layer, which should be logged and ignored
     Method method = clazz.getMethod("getAllDatabases");
 
