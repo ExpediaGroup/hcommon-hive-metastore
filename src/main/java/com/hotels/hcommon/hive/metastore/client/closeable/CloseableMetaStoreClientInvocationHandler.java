@@ -53,12 +53,18 @@ class CloseableMetaStoreClientInvocationHandler implements InvocationHandler {
       } catch (InvocationTargetException compatibilityException) {
         if (compatibilityException.getCause().getClass().isAssignableFrom(TApplicationException.class)) {
           log
-              .warn("Unable to run compatibility for metastore client method {}. Will rethrow original exception: ",
+              .warn(
+                  "Unable to run compatibility for metastore client method {}. Will rethrow original exception, logging exception from compatibility layer: ",
                   method.getName(), compatibilityException);
         } else {
-          // compatibily worked but threw non TApplicaitonException, rethrowing cause.
+          // compatibily worked but threw non TApplicationException, rethrowing cause.
           throw compatibilityException.getCause();
         }
+      } catch (Throwable t) {
+        log
+            .warn(
+                "Unable to run compatibility for metastore client method {}. Will rethrow original exception, logging exception from compatibility layer: ",
+                method.getName(), t);
       }
       throw delegateException.getCause();
     }
