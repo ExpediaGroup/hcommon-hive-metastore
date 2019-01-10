@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018 Expedia Inc.
+ * Copyright (C) 2018-2019 Expedia Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.hotels.hcommon.hive.metastore.client.closeable;
 
 import java.lang.reflect.InvocationHandler;
@@ -34,9 +33,7 @@ class CloseableMetaStoreClientInvocationHandler implements InvocationHandler {
   private final IMetaStoreClient delegate;
   private final HiveMetaStoreClientCompatibility compatibility;
 
-  CloseableMetaStoreClientInvocationHandler(
-      IMetaStoreClient delegate,
-      HiveMetaStoreClientCompatibility compatibility) {
+  CloseableMetaStoreClientInvocationHandler(IMetaStoreClient delegate, HiveMetaStoreClientCompatibility compatibility) {
     this.delegate = delegate;
     this.compatibility = compatibility;
   }
@@ -45,18 +42,25 @@ class CloseableMetaStoreClientInvocationHandler implements InvocationHandler {
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     try {
       return method.invoke(delegate, args);
-    } catch (InvocationTargetException e) {
+    } catch (InvocationTargetException delegateException) {
       try {
         log.info("Couldn't invoke method {}", method.toGenericString());
-        if (compatibility != null && e.getCause().getClass().isAssignableFrom(TApplicationException.class)) {
+        if (compatibility != null
+            && delegateException.getCause().getClass().isAssignableFrom(TApplicationException.class)) {
           log.info("Attempting to invoke with {}", compatibility.getClass().getName());
           return invokeCompatibility(method, args);
         }
-      } catch (Throwable t) {
-        log.warn("Unable to run compatibility for metastore client method {}. Will rethrow original exception: ",
-            method.getName(), t);
+      } catch (InvocationTargetException compatibilityException) {
+        if (compatibilityException.getCause().getClass().isAssignableFrom(TApplicationException.class)) {
+          log
+              .warn("Unable to run compatibility for metastore client method {}. Will rethrow original exception: ",
+                  method.getName(), compatibilityException);
+        } else {
+          // compatibily worked but threw non TApplicaitonException, rethrowing cause.
+          throw compatibilityException.getCause();
+        }
       }
-      throw e.getCause();
+      throw delegateException.getCause();
     }
   }
 
