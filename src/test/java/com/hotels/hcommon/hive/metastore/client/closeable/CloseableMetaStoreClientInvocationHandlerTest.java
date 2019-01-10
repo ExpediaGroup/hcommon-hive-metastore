@@ -135,4 +135,29 @@ public class CloseableMetaStoreClientInvocationHandlerTest {
       assertThat(e, is(original));
     }
   }
+
+  @Test
+  public void invocationExceptionOnCompatibilityLayerIsIgnoredOriginalExceptionShouldBeThrown() throws Throwable {
+    Class<?> clazz = Class.forName(IMetaStoreClient.class.getName());
+    // This method does not exist in compatibility class, will result in NoSuchMethodException from the compatiblity
+    // layer, which should be logged and ignored
+    Method method = clazz.getMethod("getAllDatabases");
+
+    final TApplicationException original = new TApplicationException("original");
+
+    IMetaStoreClient exceptionThrowingClient = Mockito.mock(IMetaStoreClient.class, new Answer<Void>() {
+      @Override
+      public Void answer(InvocationOnMock invocation) throws Throwable {
+        throw original;
+      }
+    });
+
+    invocationHandler = new CloseableMetaStoreClientInvocationHandler(exceptionThrowingClient, compatibility);
+    try {
+      invocationHandler.invoke(null, method, new Object[0]);
+      fail("Exception should have been thrown");
+    } catch (TApplicationException e) {
+      assertThat(e, is(original));
+    }
+  }
 }
