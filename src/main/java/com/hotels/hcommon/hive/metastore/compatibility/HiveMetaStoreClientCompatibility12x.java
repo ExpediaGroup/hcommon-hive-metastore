@@ -103,6 +103,16 @@ public class HiveMetaStoreClientCompatibility12x implements HiveMetaStoreClientC
     return deepCopy(get_table(dbname, name));
   }
 
+  @Override
+  public boolean tableExists(String dbname, String name) throws MetaException, TException, NoSuchObjectException {
+    try {
+      get_table(dbname, name);
+    } catch (NoSuchObjectException e) {
+      return false;
+    }
+    return true;
+  }
+
   /*
    * Copied from Hive 1.2.1 ThriftHiveMetastore.Client#get_table(String,String) - see
    * https://raw.githubusercontent.com/apache/hive/release-1.2.1/metastore/src/gen/thrift/gen-javabean/org/apache/hadoop

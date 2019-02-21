@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018 Expedia Inc.
+ * Copyright (C) 2018-2019 Expedia Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package com.hotels.hcommon.hive.metastore.compatibility;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -58,6 +60,7 @@ public class HiveMetaStoreClientCompatibility12xTest {
 
   private static final String DATABASE = "db";
   private static final String TABLE = "tbl";
+  private static final String NON_EXISTENT_TABLE = "non_existent_table";
 
   private static class RelaxedTServiceClient extends ThriftHiveMetastore.Client {
     private final ThriftHiveMetastore.Client delegate;
@@ -127,7 +130,7 @@ public class HiveMetaStoreClientCompatibility12xTest {
   }
 
   @Test
-  public void properClient() throws Exception {
+  public void properClientGetTable() throws Exception {
     IMetaStoreClient metastoreClient = metastore.client();
     RelaxedTServiceClient tServiceClient = prepareClient(metastoreClient);
     HiveMetaStoreClientCompatibility12x compatibility = new HiveMetaStoreClientCompatibility12x(metastoreClient);
@@ -136,7 +139,7 @@ public class HiveMetaStoreClientCompatibility12xTest {
   }
 
   @Test
-  public void prepareRetryingClient() throws Exception {
+  public void prepareRetryingClientGetTable() throws Exception {
     IMetaStoreClient metastoreClient = RetryingMetaStoreClient.getProxy(metastore.conf(), new HiveMetaHookLoader() {
       @Override
       public HiveMetaHook getHook(Table tbl) throws MetaException {
@@ -149,4 +152,38 @@ public class HiveMetaStoreClientCompatibility12xTest {
     verify(tServiceClient).sendBase(eq("get_table"), eq(new get_table_args(DATABASE, TABLE)));
   }
 
+  @Test
+  public void properClientTableExists() throws Exception {
+    IMetaStoreClient metastoreClient = metastore.client();
+    RelaxedTServiceClient tServiceClient = prepareClient(metastoreClient);
+    HiveMetaStoreClientCompatibility12x compatibility = new HiveMetaStoreClientCompatibility12x(metastoreClient);
+    boolean tableExists = compatibility.tableExists(DATABASE, TABLE);
+    verify(tServiceClient).sendBase(eq("get_table"), eq(new get_table_args(DATABASE, TABLE)));
+    assertThat(tableExists, is(true));
+  }
+
+  @Test
+  public void properClientTableDoesNotExist() throws Exception {
+    IMetaStoreClient metastoreClient = metastore.client();
+    RelaxedTServiceClient tServiceClient = prepareClient(metastoreClient);
+    HiveMetaStoreClientCompatibility12x compatibility = new HiveMetaStoreClientCompatibility12x(metastoreClient);
+    boolean tableExists = compatibility.tableExists(DATABASE, NON_EXISTENT_TABLE);
+    verify(tServiceClient).sendBase(eq("get_table"), eq(new get_table_args(DATABASE, NON_EXISTENT_TABLE)));
+    assertThat(tableExists, is(false));
+  }
+
+  @Test
+  public void prepareRetryingClientTableExists() throws Exception {
+    IMetaStoreClient metastoreClient = RetryingMetaStoreClient.getProxy(metastore.conf(), new HiveMetaHookLoader() {
+      @Override
+      public HiveMetaHook getHook(Table tbl) throws MetaException {
+        return null;
+      }
+    }, HiveMetaStoreClient.class.getName());
+    RelaxedTServiceClient tServiceClient = prepareRetryingClient(metastoreClient);
+    HiveMetaStoreClientCompatibility12x compatibility = new HiveMetaStoreClientCompatibility12x(metastoreClient);
+    boolean tableExists = compatibility.tableExists(DATABASE, TABLE);
+    verify(tServiceClient).sendBase(eq("get_table"), eq(new get_table_args(DATABASE, TABLE)));
+    assertThat(tableExists, is(true));
+  }
 }
