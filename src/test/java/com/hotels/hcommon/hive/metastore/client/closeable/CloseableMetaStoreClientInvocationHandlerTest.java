@@ -54,7 +54,7 @@ public class CloseableMetaStoreClientInvocationHandlerTest {
   }
 
   @Test
-  public void invokeCompatibilityWhenTApplicationExceptionIsThrown() throws Throwable {
+  public void invokeCompatibilityWhenGetTableTApplicationExceptionIsThrown() throws Throwable {
     Class<?> clazz = Class.forName(IMetaStoreClient.class.getName());
     Method method = clazz.getMethod("getTable", String.class, String.class);
     String dbName = "db";
@@ -70,6 +70,25 @@ public class CloseableMetaStoreClientInvocationHandlerTest {
     invocationHandler = new CloseableMetaStoreClientInvocationHandler(exceptionThrowingClient, compatibility);
     invocationHandler.invoke(null, method, new String[] { dbName, tableName });
     verify(compatibility).getTable(eq(dbName), eq(tableName));
+  }
+
+  @Test
+  public void invokeCompatibilityWhenTableExistsTApplicationExceptionIsThrown() throws Throwable {
+    Class<?> clazz = Class.forName(IMetaStoreClient.class.getName());
+    Method method = clazz.getMethod("tableExists", String.class, String.class);
+    String dbName = "db";
+    String tableName = "table";
+
+    IMetaStoreClient exceptionThrowingClient = Mockito.mock(IMetaStoreClient.class, new Answer<Void>() {
+      @Override
+      public Void answer(InvocationOnMock invocation) throws Throwable {
+        throw new TApplicationException();
+      }
+    });
+
+    invocationHandler = new CloseableMetaStoreClientInvocationHandler(exceptionThrowingClient, compatibility);
+    invocationHandler.invoke(null, method, new String[] { dbName, tableName });
+    verify(compatibility).tableExists(eq(dbName), eq(tableName));
   }
 
   @Test(expected = NoSuchObjectException.class)

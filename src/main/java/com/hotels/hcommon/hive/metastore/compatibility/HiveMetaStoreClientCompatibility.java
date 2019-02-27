@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018 Expedia Inc.
+ * Copyright (C) 2018-2019 Expedia Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,4 +22,6 @@ import org.apache.thrift.TException;
 
 public interface HiveMetaStoreClientCompatibility {
   Table getTable(String dbname, String name) throws MetaException, TException, NoSuchObjectException;
+
+  boolean tableExists(String dbname, String name) throws MetaException, TException, NoSuchObjectException;
 }

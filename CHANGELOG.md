@@ -1,3 +1,7 @@
+# [1.3.0] - 2019-02-27
+### Fixed
+* Added Hive 1.2 compatible `tableExists` method. See [#115](https://github.com/HotelsDotCom/circus-train/issues/115).
+
 # [1.2.4] - 2019-01-10
 ### Changed
 * Refactored project to remove checkstyle and findbugs warnings, which does not impact functionality.
