@@ -20,10 +20,13 @@ import java.util.Set;
 
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hive.metastore.IMetaStoreClient;
+import org.apache.hadoop.hive.metastore.Warehouse;
 import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.apache.hadoop.hive.metastore.api.NoSuchObjectException;
 import org.apache.hadoop.hive.metastore.api.Table;
 import org.apache.thrift.TException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public interface TablePathResolver {
 
@@ -36,12 +39,16 @@ public interface TablePathResolver {
 
   class Factory {
 
-    public static TablePathResolver newTablePathResolver(
+    private static final Logger log = LoggerFactory.getLogger(TablePathResolver.Factory.class);
+
+    static TablePathResolver newTablePathResolver(
         IMetaStoreClient metastore, Table table)
         throws URISyntaxException, NoSuchObjectException, MetaException, TException {
       if (!table.getPartitionKeys().isEmpty()) {
+        log.debug("Table '{}' is partitioned", Warehouse.getQualifiedName(table));
         return new PartitionedTablePathResolver(metastore, table);
       } else {
+        log.debug("Table '{}' is unpartitioned", Warehouse.getQualifiedName(table));
         return new UnpartitionedTablePathResolver(table);
       }
     }

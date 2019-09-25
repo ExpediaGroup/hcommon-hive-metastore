@@ -23,14 +23,9 @@ import java.util.Collections;
 import java.util.Set;
 
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.hive.metastore.Warehouse;
 import org.apache.hadoop.hive.metastore.api.Table;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 class UnpartitionedTablePathResolver implements TablePathResolver {
-
-  private static final Logger log = LoggerFactory.getLogger(UnpartitionedTablePathResolver.class);
 
   private final Path tableBaseLocation;
   private final Path globPath;
@@ -39,7 +34,6 @@ class UnpartitionedTablePathResolver implements TablePathResolver {
   UnpartitionedTablePathResolver(Table table) {
     this.table = table;
     Path localTableBaseLocation = locationAsPath(table);
-    log.debug("Table '{}' is unpartitioned", Warehouse.getQualifiedName(table));
     tableBaseLocation = localTableBaseLocation.getParent();
     globPath = new Path(tableBaseLocation, "*");
   }

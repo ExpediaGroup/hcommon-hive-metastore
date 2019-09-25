@@ -31,14 +31,10 @@ import org.apache.hadoop.hive.metastore.api.NoSuchObjectException;
 import org.apache.hadoop.hive.metastore.api.Partition;
 import org.apache.hadoop.hive.metastore.api.Table;
 import org.apache.thrift.TException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.hotels.hcommon.hive.metastore.iterator.PartitionIterator;
 
 class PartitionedTablePathResolver implements TablePathResolver {
-
-  private static final Logger log = LoggerFactory.getLogger(PartitionedTablePathResolver.class);
 
   private final Path tableBaseLocation;
   private final Path globPath;
@@ -49,14 +45,11 @@ class PartitionedTablePathResolver implements TablePathResolver {
       throws NoSuchObjectException, MetaException, TException {
     this.metaStore = metaStore;
     this.table = table;
-    log.debug("Table '{}' is partitioned", Warehouse.getQualifiedName(table));
     tableBaseLocation = locationAsPath(table);
     List<Partition> onePartition = metaStore.listPartitions(table.getDbName(), table.getTableName(), (short) 1);
     if (onePartition.isEmpty()) {
-      String errorMessage = String.format("Table '%s' has no partitions, perhaps you can simply delete: %s.",
-          Warehouse.getQualifiedName(table), tableBaseLocation);
-      log.warn(errorMessage);
-      throw new RuntimeException(errorMessage);
+      throw new RuntimeException(String.format("Table %s at location '%s' has no partitions.",
+          Warehouse.getQualifiedName(table), tableBaseLocation));
     }
     Path partitionLocation = locationAsPath(onePartition.get(0));
     int branches = partitionLocation.depth() - tableBaseLocation.depth();
@@ -85,10 +78,8 @@ class PartitionedTablePathResolver implements TablePathResolver {
           .toString()
           .toLowerCase(Locale.ROOT)
           .startsWith(tableBaseLocation.toString().toLowerCase(Locale.ROOT))) {
-        String errorMessage = String.format("Check your configuration: '%s' does not appear to be part of '%s'.",
-            location, tableBaseLocation);
-        log.error(errorMessage);
-        throw new RuntimeException(errorMessage);
+        throw new RuntimeException(String.format("Check your configuration: '%s' does not appear to be part of '%s'.",
+            location, tableBaseLocation));
       }
       metaStorePaths.add(location);
     }

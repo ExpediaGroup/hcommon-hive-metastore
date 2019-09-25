@@ -1,4 +1,4 @@
-# TBD
+# [1.4.0] - TBD
 ### Added
 * Classes for resolving partition locations and table location from a metastore.
 
