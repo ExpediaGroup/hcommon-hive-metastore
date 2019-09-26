@@ -1,3 +1,7 @@
+# [1.4.0] - TBD
+### Added
+* Classes for resolving partition locations and table location from a metastore.
+
 # [1.3.0] - 2019-02-27
 ### Fixed
 * Added Hive 1.2 compatible `tableExists` method. See [#115](https://github.com/HotelsDotCom/circus-train/issues/115).
