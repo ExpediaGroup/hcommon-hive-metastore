@@ -1,4 +1,4 @@
-# [1.4.1] - 2019-10-01
+# [1.4.1] - TBD
 ### Fixed
 * Made `newTablePathResolver` method in `TablePathResolver` public.
 
