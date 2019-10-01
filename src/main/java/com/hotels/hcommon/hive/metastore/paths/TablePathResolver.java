@@ -41,7 +41,7 @@ public interface TablePathResolver {
 
     private static final Logger log = LoggerFactory.getLogger(TablePathResolver.Factory.class);
 
-    static TablePathResolver newTablePathResolver(
+    public static TablePathResolver newTablePathResolver(
         IMetaStoreClient metastore, Table table)
         throws URISyntaxException, NoSuchObjectException, MetaException, TException {
       if (!table.getPartitionKeys().isEmpty()) {
