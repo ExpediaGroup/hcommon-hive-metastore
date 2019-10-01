@@ -1,6 +1,6 @@
-# [1.4.1] - TBC
+# [1.4.1] - 2019-10-01
 ### Fixed
-* Made newTablePathResolver method in TablePathResolver public.
+* Made `newTablePathResolver` method in `TablePathResolver` public.
 
 # [1.4.0] - 2019-09-30
 ### Added
