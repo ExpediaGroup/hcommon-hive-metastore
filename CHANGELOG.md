@@ -1,3 +1,7 @@
+# [1.4.1] - TBC
+### Fixed
+* Made newTablePathResolver method in TablePathResolver public.
+
 # [1.4.0] - 2019-09-30
 ### Added
 * Classes for resolving partition locations and table location from a metastore.
