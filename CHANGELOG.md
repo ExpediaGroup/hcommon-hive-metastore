@@ -1,3 +1,7 @@
+# [1.4.2] - 2019-10-03
+### Changed
+* Upgraded version of `hive.version` to `2.3.7` (was `2.3.4`). Allows hcommon-hive-metastore to be used on JDK>=9.
+
 # [1.4.1] - 2019-10-03
 ### Fixed
 * Made `newTablePathResolver` method in `TablePathResolver` public.
