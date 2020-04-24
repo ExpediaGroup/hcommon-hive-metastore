@@ -1,4 +1,4 @@
-# [1.4.2] - TBD
+# [1.4.2] - 2020-04-24
 ### Changed
 * Upgraded version of `hive.version` to `2.3.7` (was `2.3.4`). Allows hcommon-hive-metastore to be used on JDK>=9.
 
