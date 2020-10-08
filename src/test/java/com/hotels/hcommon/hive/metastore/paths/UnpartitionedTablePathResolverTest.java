@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018-2019 Expedia Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,16 +35,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class UnpartitionedTablePathResolverTest {
 
-  private static final String DATABASE_NAME = "database";
-  private static final String TABLE_NAME = "table";
   private TablePathResolver tablePathResolver;
   private @Mock Table table;
   private @Mock StorageDescriptor tableSd;
 
   @Before
   public void setUp() {
-    when(table.getDbName()).thenReturn(DATABASE_NAME);
-    when(table.getTableName()).thenReturn(TABLE_NAME);
     when(table.getSd()).thenReturn(tableSd);
     when(tableSd.getLocation()).thenReturn("file:///tmp/data/eventId/");
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018 Expedia Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,25 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.hotels.hcommon.hive.metastore.client.tunnelling;
-
-import javax.validation.constraints.NotNull;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.validation.constraints.NotNull;
+
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.conf.HiveConf.ConfVars;
 
 import com.google.common.base.Supplier;
 
-import com.hotels.hcommon.hive.metastore.exception.MetaStoreClientException;
-import com.hotels.hcommon.hive.metastore.client.supplier.HiveMetaStoreClientSupplier;
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
 import com.hotels.hcommon.hive.metastore.client.api.MetaStoreClientFactory;
+import com.hotels.hcommon.hive.metastore.client.supplier.HiveMetaStoreClientSupplier;
+import com.hotels.hcommon.hive.metastore.exception.MetaStoreClientException;
 import com.hotels.hcommon.ssh.MethodChecker;
 import com.hotels.hcommon.ssh.SshException;
 import com.hotels.hcommon.ssh.TunnelableFactory;
