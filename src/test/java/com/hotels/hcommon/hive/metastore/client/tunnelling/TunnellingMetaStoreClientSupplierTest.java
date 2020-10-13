@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2018 Expedia Inc.
+ * Copyright (C) 2018-2020 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.hotels.hcommon.hive.metastore.client.tunnelling;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,13 +30,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import com.jcraft.jsch.JSchException;
-
-import com.hotels.hcommon.hive.metastore.exception.MetaStoreClientException;
 import com.hotels.hcommon.hive.metastore.client.api.CloseableMetaStoreClient;
 import com.hotels.hcommon.hive.metastore.client.closeable.CloseableMetaStoreClientFactory;
+import com.hotels.hcommon.hive.metastore.exception.MetaStoreClientException;
 import com.hotels.hcommon.ssh.MethodChecker;
 import com.hotels.hcommon.ssh.TunnelableFactory;
 import com.hotels.hcommon.ssh.TunnelableSupplier;
@@ -61,11 +58,6 @@ public class TunnellingMetaStoreClientSupplierTest {
   @Before
   public void init() {
     hiveConf.setVar(HiveConf.ConfVars.METASTOREURIS, "thrift://" + REMOTE_HOST + ":" + REMOTE_PORT);
-  }
-
-  @Before
-  public void injectMocks() throws Exception {
-    when(metaStoreClientFactory.newInstance(eq(hiveConf), eq(NAME))).thenReturn(metaStoreClient);
   }
 
   @Test
@@ -96,10 +88,10 @@ public class TunnellingMetaStoreClientSupplierTest {
 
 
   @Test(expected = MetaStoreClientException.class)
-  public void jschException() throws JSchException {
+  public void runtimeException() {
     reset(tunnelableFactory, metaStoreClientFactory);
     when(tunnelableFactory.wrap(any(TunnelableSupplier.class), any(MethodChecker.class), eq(LOCAL_HOST), anyInt(),
-        eq(REMOTE_HOST), eq(REMOTE_PORT))).thenThrow(JSchException.class);
+        eq(REMOTE_HOST), eq(REMOTE_PORT))).thenThrow(RuntimeException.class);
 
     supplier = new TunnellingMetaStoreClientSupplier(hiveConf, NAME, LOCAL_HOST, metaStoreClientFactory,
         tunnelableFactory);

@@ -1,3 +1,10 @@
+# [2.0.0] - TBD
+### Changed
+* Minimum supported Java version is now `8` (was `7`).
+* Upgraded version of `hotels-oss-parent` to `5.0.0` (was `2.3.5`).
+* Upgraded version of `BeeJU` to `3.1.0` (was `1.3.0`).
+* Upgraded version of `hcommon-ssh` to `1.0.2` (was `1.0.1`).
+
 # [1.4.2] - 2020-04-24
 ### Changed
 * Upgraded version of `hive.version` to `2.3.7` (was `2.3.4`). Allows hcommon-hive-metastore to be used on JDK>=9.
