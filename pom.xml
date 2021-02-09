@@ -20,7 +20,7 @@
   </scm>
 
   <properties>
-    <beeju.version>3.1.0</beeju.version>
+    <beeju.version>4.0.0-SNAPSHOT</beeju.version>
     <hamcrest-library.version>2.2</hamcrest-library.version>
     <hcommon-ssh.version>1.0.2</hcommon-ssh.version>
     <hibernate-validator.version>5.4.2.Final</hibernate-validator.version>
