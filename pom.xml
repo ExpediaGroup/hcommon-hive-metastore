@@ -20,11 +20,11 @@
   </scm>
 
   <properties>
-    <beeju.version>3.1.0</beeju.version>
+    <beeju.version>5.0.0-SNAPSHOT</beeju.version>
     <hamcrest-library.version>2.2</hamcrest-library.version>
     <hcommon-ssh.version>1.0.2</hcommon-ssh.version>
     <hibernate-validator.version>5.4.2.Final</hibernate-validator.version>
-    <hive.version>2.3.7</hive.version>
+    <hive.version>3.1.2</hive.version>
     <javax-el.version>3.0.1-b08</javax-el.version>
     <log4j2.version>2.6.2</log4j2.version>
     <mockito.version>3.5.11</mockito.version>
@@ -37,6 +37,12 @@
       <artifactId>hive-common</artifactId>
       <scope>provided</scope>
       <version>${hive.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>log4j-slf4j-impl</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.hive</groupId>
@@ -47,6 +53,18 @@
         <exclusion>
           <groupId>org.apache.hbase</groupId>
           <artifactId>hbase-client</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-exec</artifactId>
+      <scope>provided</scope>
+      <version>${hive.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>log4j-slf4j-impl</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
