@@ -3,19 +3,20 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.hotels</groupId>
-    <artifactId>hotels-oss-parent</artifactId>
-    <version>5.0.0</version>
+    <groupId>com.expediagroup</groupId>
+    <artifactId>eg-oss-parent</artifactId>
+    <version>2.4.0</version>
   </parent>
 
+  <groupId>com.hotels</groupId>
   <artifactId>hcommon-hive-metastore</artifactId>
   <version>1.4.3-SNAPSHOT</version>
   <inceptionYear>2018</inceptionYear>
 
   <scm>
-    <connection>scm:git:https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/HotelsDotCom/hcommon-hive-metastore.git</connection>
-    <developerConnection>scm:git:https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/HotelsDotCom/hcommon-hive-metastore.git</developerConnection>
-    <url>https://github.com/HotelsDotCom/hcommon-hive-metastore</url>
+    <connection>scm:git:https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/ExpediaGroup/hcommon-hive-metastore.git</connection>
+    <developerConnection>scm:git:https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/ExpediaGroup/hcommon-hive-metastore.git</developerConnection>
+    <url>https://github.com/ExpediaGroup/hcommon-hive-metastore</url>
     <tag>HEAD</tag>
   </scm>
 
@@ -23,7 +24,7 @@
     <beeju.version>3.1.0</beeju.version>
     <hamcrest-library.version>2.2</hamcrest-library.version>
     <hcommon-ssh.version>1.0.2</hcommon-ssh.version>
-    <hibernate-validator.version>5.4.2.Final</hibernate-validator.version>
+    <hibernate-validator.version>5.4.2</hibernate-validator.version>
     <hive.version>2.3.7</hive.version>
     <javax-el.version>3.0.1-b08</javax-el.version>
     <log4j2.version>2.6.2</log4j2.version>

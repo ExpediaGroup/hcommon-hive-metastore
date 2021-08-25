@@ -19,7 +19,7 @@
 
 # [1.3.0] - 2019-02-27
 ### Fixed
-* Added Hive 1.2 compatible `tableExists` method. See [#115](https://github.com/HotelsDotCom/circus-train/issues/115).
+* Added Hive 1.2 compatible `tableExists` method. See [#115](https://github.com/ExpediaGroup/circus-train/issues/115).
 
 # [1.2.4] - 2019-01-10
 ### Changed
@@ -28,8 +28,8 @@
 * Upgraded Hive version to 2.3.4 (was 2.3.2).
 * Removed transitive (provided) dependency on `hbase-client`.
 ### Fixed
-* Removed 'isOpen()' method from CloseableMetaStoreClient. See [#11](https://github.com/HotelsDotCom/hcommon-hive-metastore/issues/11).
-* Issue where the wrong exception was being propagated in the compatibility layer. See [#16](https://github.com/HotelsDotCom/hcommon-hive-metastore/issues/16).
+* Removed 'isOpen()' method from CloseableMetaStoreClient. See [#11](https://github.com/ExpediaGroup/hcommon-hive-metastore/issues/11).
+* Issue where the wrong exception was being propagated in the compatibility layer. See [#16](https://github.com/ExpediaGroup/hcommon-hive-metastore/issues/16).
 
 # [1.2.3] - 2018-10-29
 ### Fixed
