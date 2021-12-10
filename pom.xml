@@ -27,7 +27,7 @@
     <hibernate-validator.version>5.4.3.Final</hibernate-validator.version>
     <hive.version>2.3.7</hive.version>
     <javax-el.version>3.0.1-b08</javax-el.version>
-    <log4j2.version>2.6.2</log4j2.version>
+    <log4j2.version>2.15.0</log4j2.version>
     <mockito.version>3.5.11</mockito.version>
     <validation-api.version>1.1.0.Final</validation-api.version>
   </properties>
